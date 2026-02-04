@@ -1,9 +1,51 @@
-It started with me wondering about wave–particle duality. I was working through Spivak's treatment of limits and the graph of f(x) = x sin(1/x), and the oscillatory-yet-convergent behavior reminded me of the photon's dual nature. I asked myself: what would have to be true for a photon to behave as both a wave and a particle? At some point it occurred to me to ask, what if it were actually two massive objects in orbit at a scale beyond our ability to measure? Their helical orbit would trace a wave pattern from the side while remaining particle-like head-on. 
+# Numerical Coincidences from a BCC Lattice Framework
 
-I recalled that probing the Planck length with light would require wavelengths so energetic they'd collapse into a black hole — so I imagined a sub-Planckian binary system of singularities.
+**Author:** Alan Garcia — Independent Researcher  
+**Contact:** alan.javier.garcia@gmail.com
 
-The question then became: what would have to be self-consistent for that picture to work? How small would those singularities have to be, and what constraints would the framework need to satisfy? 
+## How This Started
 
-Over about three days of iterative computation, the framework converged on a self-consistent BCC lattice structure that derives both α⁻¹ and m_p/m_e from the integer 8 and π to sub-ppb accuracy against CODATA 2018 values.
+This project began with a simple question about wave–particle duality: what would have to be true for a photon to behave as both a wave and a particle?
 
-The physical picture is still not clear but the predictive accuracy prompts me to seek input.
+I imagined two massive objects in a tight helical orbit at a scale far below anything we can currently measure. Viewed from the side, their orbit traces a wave pattern; viewed head-on, they look like a single point — particle-like. I recalled that probing the Planck length with light would require wavelengths so energetic they'd collapse into a black hole, so I pushed the picture further: a sub-Planckian binary system of singularities.
+
+The question then became one of self-consistency. How small would those singularities have to be? What constraints would the framework need to satisfy? Over about three days of iterative computation, the framework converged on a body-centered cubic (BCC) lattice structure that derives both the inverse fine structure constant (α⁻¹) and the proton-electron mass ratio (m_p/m_e) from two inputs — the BCC coordination number *n* = 8 and the transcendental π — with zero free parameters.
+
+The predictions agree with CODATA 2018 experimental values to better than 0.005 ppb and 0.03 ppb, respectively. The physical picture underlying the lattice structure is still not clear, but the predictive accuracy is difficult to dismiss as coincidence, and I am seeking input from the physics and mathematics communities.
+
+## What's in This Repo
+
+| File | Description |
+|------|-------------|
+| `bsm_inquiry.tex` | The paper (LaTeX source, REVTeX 4.2 / APS format) |
+| `bsm_inquiry.pdf` | Compiled PDF |
+
+## Quick Verification
+
+The core results can be verified in a few lines of Python:
+
+```python
+import numpy as np
+
+def tau(n): return n*(2*n+1)+1
+def sigma(n): return n*(2*n+1)
+def mu(n): return 1.5*sigma(n)*(n+1)
+
+N = 8
+TAU, SIGMA, MU = tau(N), sigma(N), mu(N)
+
+B = TAU + np.pi**2/(2*TAU) - 1/(2*TAU**2) - 1/((N-1)*TAU**3)
+alpha_inv = B + 1/((N+2)*B**2)
+alpha = 1/alpha_inv
+
+t1 = np.pi*MU*SIGMA*alpha**3/4
+t2 = (2*N+1)*np.pi**2*alpha*(1-alpha**2)/16
+mass = MU + t1 + t2 - alpha**2
+
+print(f"alpha^-1 = {alpha_inv:.9f}")  # 137.035999084  (CODATA: 137.035999084(21))
+print(f"m_p/m_e  = {mass:.6f}")       # 1836.152674    (CODATA: 1836.15267343(11))
+```
+
+## Status
+
+This is an independent investigation, not a claim of proof. I am actively seeking feedback — including identification of a trivial explanation for the numerical coincidences — from anyone with expertise in lattice field theory, representation theory, or mathematical physics.
