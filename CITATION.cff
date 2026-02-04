@@ -1,31 +1,36 @@
-cff-version: 1.2.0
-message: "If you use this work, please cite it as below."
-type: dataset
+cff-version: 2.0.0
 title: "Numerical Coincidences from a BCC Lattice Framework"
-abstract: >-
-  A lattice field theory framework in which the fine structure constant
-  and the proton-electron mass ratio emerge from the spectral geometry
-  of the body-centered cubic (BCC) lattice Dirac operator. The framework
-  takes two inputs — the BCC coordination number n = 8 and π — and
-  produces values for both constants with zero free parameters, achieving
-  agreement with CODATA 2018 values to better than 0.005 ppb and 0.03 ppb,
-  respectively.
+message: "If you use or reference this work, please cite it using the metadata from this file."
+type: dataset
 authors:
-  - family-names: Garcia
-    given-names: Alan
+  - given-names: Alan
+    family-names: Garcia
     email: alan.javier.garcia@gmail.com
+    affiliation: Independent Researcher
+abstract: >-
+  A lattice field theory framework in which the fine structure constant,
+  the proton-electron mass ratio, and the muon-electron mass ratio emerge
+  from the spectral geometry of the BCC lattice Dirac operator. The
+  framework takes two inputs — the BCC coordination number n = 8 and the
+  transcendental π — and produces values for all three constants with
+  zero free parameters. The proton mass formula appears in n-explicit
+  factored form, with correction denominators that are functions of the
+  coordination number (n/2 and 2n). The muon follows the same correction
+  taxonomy but with the spatial dimension d replacing n as the structural
+  parameter. Current accuracy against CODATA 2022: α⁻¹ < 0.001 ppb,
+  m_p/m_e < 0.03 ppb, m_μ/m_e 1.1 ppb (0.05σ).
 keywords:
   - fine structure constant
   - proton-electron mass ratio
-  - lattice field theory
+  - muon-electron mass ratio
   - BCC lattice
-  - Dirac operator
+  - lattice field theory
   - SO(3) representation theory
-  - fundamental constants
+  - Dyson equation
+  - spectral geometry
 license: CC-BY-4.0
-doi: "10.5281/zenodo.18478082"
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.18478082"
-    description: "Zenodo archive of this work"
+version: "2.0"
 date-released: "2026-02-04"
+doi: 10.5281/zenodo.18478082
+url: "https://doi.org/10.5281/zenodo.18478082"
+repository-code: "https://github.com/alangarcia/bsm-lattice-framework"
