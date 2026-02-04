@@ -1,6 +1,5 @@
-\documentclass[11pt,letterpaper]{article}
+\documentclass[aps,prd,preprint,superscriptaddress,nofootinbib,longbibliography]{revtex4-2}
 
-\usepackage[margin=0.9in]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{array}
@@ -12,59 +11,69 @@
 \usepackage{float}
 \usepackage{colortbl}
 
-\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black, citecolor=blue!60!black}
 
 \definecolor{bccgreen}{HTML}{e8f5e8}
 \definecolor{scyellow}{HTML}{fff8e0}
 \definecolor{fccred}{HTML}{fde8e8}
-\definecolor{headbg}{HTML}{e8e8f0}
-\definecolor{darkblue}{HTML}{1a1a2e}
-
-\pagestyle{empty}
 
 \newcommand{\ainv}{\alpha^{-1}}
 \newcommand{\ppb}{\,\mathrm{ppb}}
 
-\setlength{\parskip}{4pt}
-\setlength{\parindent}{0pt}
-
 \begin{document}
 
-% ── Title ──────────────────────────────────────────────────────────────
-\begin{center}
-  {\Large\bfseries\color{darkblue}
-    Numerical Coincidences from a BCC Lattice Framework}\\[4pt]
-  {\itshape A concise summary for discussion --- not a claim of proof}\\[2pt]
-  {\small Alan Garcia \quad|\quad February 2026 \quad|\quad Independent investigation}
-\end{center}
-\vspace{-2pt}
-\hrule
-\vspace{6pt}
+\title{Numerical Coincidences from a BCC Lattice Framework:\\
+A Concise Summary for Discussion}
 
-% ── 1 ──────────────────────────────────────────────────────────────────
-\subsection*{1.\ What This Is}
+\author{Alan Garcia}
+\email{alan.javier.garcia@gmail.com}
+\affiliation{Independent Researcher}
 
-I am an independent researcher exploring a lattice field theory framework
-in which the fine structure constant and the proton-electron mass ratio
-emerge from the spectral geometry of the BCC lattice Dirac operator. The
+\date{\today}
+
+\begin{abstract}
+We present a lattice field theory framework in which the fine structure
+constant and the proton-electron mass ratio emerge from the spectral
+geometry of the body-centered cubic (BCC) lattice Dirac operator. The
 framework takes two inputs---the BCC coordination number $n = 8$ and the
 transcendental $\pi$---and produces values for both constants with zero
-free parameters. I am writing to ask whether you can see a trivial
-explanation for the coincidences below, or whether the lattice selection
-mechanism has structural content.
+free parameters, achieving agreement with CODATA 2018 values to better
+than $0.005\ppb$ and $0.03\ppb$, respectively. We compare the BCC
+lattice against simple cubic (SC) and face-centered cubic (FCC)
+alternatives and find that only the BCC lattice simultaneously
+reproduces both constants. This document is intended as a summary for
+discussion and does not constitute a claim of proof.
+\end{abstract}
+
+\maketitle
+
+% ── 1 ──────────────────────────────────────────────────────────────────
+\section{Introduction}
+\label{sec:introduction}
+
+This work explores a lattice field theory framework in which the fine
+structure constant and the proton-electron mass ratio emerge from the
+spectral geometry of the BCC lattice Dirac operator. The framework takes
+two inputs---the BCC coordination number $n = 8$ and the transcendental
+$\pi$---and produces values for both constants with zero free
+parameters. We pose the question: is there a trivial explanation for the
+coincidences presented below, or does the lattice selection mechanism
+have structural content?
 
 % ── 2 ──────────────────────────────────────────────────────────────────
-\subsection*{2.\ Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
+\section{Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
+\label{sec:generators}
 
 Four functions of the coordination number $n$ arise from the
 representation theory of $\mathrm{SO}(3)$:
 
-\begin{equation*}
-  \tau(n) = n(2n{+}1) + 1 \qquad
-  \sigma(n) = n(2n{+}1) \qquad
-  \rho(n) = n + 1 \qquad
-  \mu(n) = \tfrac{3}{2}\,\sigma\,\rho
-\end{equation*}
+\begin{equation}
+  \tau(n) = n(2n{+}1) + 1, \qquad
+  \sigma(n) = n(2n{+}1), \qquad
+  \rho(n) = n + 1, \qquad
+  \mu(n) = \tfrac{3}{2}\,\sigma\,\rho.
+  \label{eq:generators}
+\end{equation}
 
 At $n = 8$: $\tau = 137$, $\sigma = 136$, $\rho = 9$, $\mu = 1836$.
 Here $\tau(n) = \dim\bigl(\Lambda^2 D(n) \oplus D(0)\bigr)$, where
@@ -73,16 +82,19 @@ representation, and $\sigma(n) = \binom{2n+1}{2}$ counts the pairwise
 couplings among $2n{+}1$ magnetic substates.
 
 % ── 3 ──────────────────────────────────────────────────────────────────
-\subsection*{3.\ Result 1: The Fine Structure Constant}
+\section{Result 1: The Fine Structure Constant}
+\label{sec:fsc}
 
-$\ainv$ is obtained from a cubic equation interpreted as a Dyson equation
-$G^{-1} = G_0^{-1} - \Sigma(G)$ for the dressed inverse coupling:
+The inverse fine structure constant $\ainv$ is obtained from a cubic
+equation interpreted as a Dyson equation $G^{-1} = G_0^{-1} -
+\Sigma(G)$ for the dressed inverse coupling:
 
-\begin{equation*}
+\begin{equation}
   \boxed{\ainv = B + \frac{1}{(n{+}2)\,B^2}}, \qquad
   B = \tau + \frac{\pi^2}{2\tau} - \frac{1}{2\tau^2}
-    - \frac{1}{(n{-}1)\,\tau^3}
-\end{equation*}
+    - \frac{1}{(n{-}1)\,\tau^3}.
+  \label{eq:alpha}
+\end{equation}
 
 The base $B$ is a perturbative self-energy expansion on the BCC lattice
 with coupling $g^2 = 1/2$ and Dirac multiplicity $N_D = 4$. The
@@ -93,7 +105,9 @@ $c_3 = -1/(n{-}1) = -1/7$ from the spectral variance, with
 $f_3(8) = -2/7$ as an exact algebraic identity.
 
 \begin{table}[H]
-\centering\small
+\centering
+\caption{Fine structure constant comparison.}
+\label{tab:alpha}
 \begin{tabular}{lc}
 \toprule
 Lattice framework prediction & $137.035\,999\,084$ \\
@@ -104,27 +118,32 @@ Agreement & $< 0.005\ppb$ \\
 \end{table}
 
 % ── 4 ──────────────────────────────────────────────────────────────────
-\subsection*{4.\ Result 2: The Proton-Electron Mass Ratio}
+\section{Result 2: The Proton-Electron Mass Ratio}
+\label{sec:mass}
 
-From the same generator functions, with $\alpha$ computed self-consistently:
+From the same generator functions, with $\alpha$ computed
+self-consistently:
 
-\begin{equation*}
+\begin{equation}
   \boxed{\frac{m_p}{m_e} = \mu
     + \frac{\pi\mu\sigma\alpha^3}{4}
     + \frac{(2n{+}1)\,\pi^2\alpha(1 - \alpha^2)}{16}
-    - \alpha^2}
-\end{equation*}
+    - \alpha^2}.
+  \label{eq:mass}
+\end{equation}
 
 The corrections decompose as a connection 1-form (vertex,
 $\pi\mu\sigma\alpha^3/4 \approx 0.0762$), a curvature 2-form (vacuum
 polarization, $(2n{+}1)\pi^2\alpha(1{-}\alpha^2)/16 \approx 0.0765$), and
 a self-intersection ($-\alpha^2 \approx -5.3\times 10^{-5}$). The factor
-$(1 - \alpha^2)$ is a dressed self-energy correction. The tree-level integer
-$\mu(8) = 1836$ is $\tfrac{3}{2}\dim(\Lambda^2 D(8))\cdot(\rho(8))$ from
-$\mathrm{SO}(3)$.
+$(1 - \alpha^2)$ is a dressed self-energy correction. The tree-level
+integer $\mu(8) = 1836$ is
+$\tfrac{3}{2}\dim(\Lambda^2 D(8))\cdot(\rho(8))$ from $\mathrm{SO}(3)$.
 
 \begin{table}[H]
-\centering\small
+\centering
+\caption{Proton-electron mass ratio comparison.}
+\label{tab:mass}
 \begin{tabular}{lc}
 \toprule
 Lattice framework prediction & $1836.152\,674$ \\
@@ -135,13 +154,17 @@ Agreement & $< 0.03\ppb$ \\
 \end{table}
 
 % ── 5 ──────────────────────────────────────────────────────────────────
-\subsection*{5.\ Lattice Selection: Why BCC?}
+\section{Lattice Selection: Why BCC?}
+\label{sec:lattice}
 
-Tested against SC ($n = 6$) and FCC ($n = 12$). The tree-level mass
+The framework was tested against simple cubic (SC, $n = 6$) and
+face-centered cubic (FCC, $n = 12$) lattices. The tree-level mass
 generator $\mu(n)$ is the discriminator:
 
 \begin{table}[H]
-\centering\small
+\centering
+\caption{Lattice comparison. Only BCC passes both tests.}
+\label{tab:lattice}
 \begin{tabular}{cccccc}
 \toprule
 \textbf{Lattice} & $n$ & $\mu(n)$ & $\ainv$ \textbf{error}
@@ -157,35 +180,37 @@ generator $\mu(n)$ is the discriminator:
 \end{tabular}
 \end{table}
 
-SC's $\ainv$ closeness is explained by $\langle D^2\rangle = 2d$ universality
-for cubic lattices (first two loop corrections identical). Discrimination enters
-at three loops via spectral variance and, decisively, through $\mu(n)$: no
-perturbative correction bridges SC's 55\% mass deficit.
+SC's $\ainv$ closeness is explained by $\langle D^2\rangle = 2d$
+universality for cubic lattices (first two loop corrections identical).
+Discrimination enters at three loops via spectral variance and,
+decisively, through $\mu(n)$: no perturbative correction bridges SC's
+55\% mass deficit.
 
 % ── 6 ──────────────────────────────────────────────────────────────────
-\subsection*{6.\ Questions for the Reader}
+\section{Questions for the Reader}
+\label{sec:questions}
 
 \begin{enumerate}[label=(\alph*),nosep,leftmargin=1.5em]
   \item Is there a trivial or known reason why polynomials of 8 produce
     integers close to 137 and 1836?
   \item Does $g^2 = 1/2$, $N_D = 4$ on BCC correspond to a recognized
     lattice action?
-  \item Is there a structural reason why the mass ratio should be sensitive
-    to coordination number in this way?
+  \item Is there a structural reason why the mass ratio should be
+    sensitive to coordination number in this way?
   \item Is the SC/BCC near-degeneracy for $\ainv$
     (via $\langle D^2\rangle = 2d$) interesting or expected?
 \end{enumerate}
 
 \medskip
-I would be grateful for any feedback, including identification of a trivial
-explanation. Full paper (\LaTeX) available on request.
-
-\vspace{6pt}
-\hrule
-\vspace{4pt}
+The author would be grateful for any feedback, including identification
+of a trivial explanation. Full working notes are available on request.
 
 % ── Appendix ───────────────────────────────────────────────────────────
-\subsection*{Appendix: Verification Code (Python)}
+\clearpage
+\appendix
+
+\section{Verification Code (Python)}
+\label{app:code}
 
 \begin{Verbatim}[fontsize=\footnotesize]
 import numpy as np
@@ -202,12 +227,13 @@ print(f"alpha^-1 = {alpha_inv:.9f}")  # 137.035999084
 print(f"m_p/m_e  = {mass:.6f}")       # 1836.152674
 \end{Verbatim}
 
-\vspace{4pt}
-\hrule
-\vspace{3pt}
-\begin{center}
-{\footnotesize\color{gray}
-  Contact: \href{mailto:alan.javier.garcia@gmail.com}{alan.javier.garcia@gmail.com} \quad|\quad Full paper and working notes available on request}
-\end{center}
+\begin{thebibliography}{9}
+
+\bibitem{CODATA2018}
+E.~Tiesinga, P.~J.~Mohr, D.~B.~Newell, and B.~N.~Taylor,
+``CODATA recommended values of the fundamental physical constants: 2018,''
+\textit{Rev.\ Mod.\ Phys.} \textbf{93}, 025010 (2021).
+
+\end{thebibliography}
 
 \end{document}
