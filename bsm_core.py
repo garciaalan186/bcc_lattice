@@ -3,14 +3,19 @@
 BSM Core Module — Generator functions and constants
 All BSM calculations centralized here
 
-Updated: February 2026 (CODATA 2022 era)
+Updated: February 2026 (Session XII — Closed-Form Koide)
+  - Switched from numpy to mpmath for arbitrary-precision arithmetic
   - α equation extended to four loops (c₄ = (2ρ/(2n+1))·π³)
-  - Proton formula in n-explicit factored form (denominators = n/2 and 2n)
   - Muon formula extended to O(α³) with proton-parallel vertex
+  - Tau prediction via dressed Koide with closed-form quadratic solution
   - All results benchmarked against CODATA 2022
 """
 
-import numpy as np
+from mpmath import mp, mpf, pi, sqrt
+
+# Set default precision (50 decimal places; float64 sufficient for physics,
+# but mpmath eliminates any doubt about floating-point artifacts)
+mp.dps = 50
 
 # =============================================================================
 # GENERATOR FUNCTIONS
@@ -18,19 +23,19 @@ import numpy as np
 
 def rho(n):
     """Radial generator: ρ(n) = n + 1"""
-    return n + 1
+    return mpf(n) + 1
 
 def sigma(n):
     """Surface generator: σ(n) = n(2n + 1)"""
-    return n * (2 * n + 1)
+    return mpf(n) * (2 * n + 1)
 
 def tau(n):
     """Topological generator: τ(n) = n(2n + 1) + 1"""
-    return n * (2 * n + 1) + 1
+    return mpf(n) * (2 * n + 1) + 1
 
 def mu(n):
     """Mass generator: μ(n) = (3/2)σ(n)ρ(n)"""
-    return 1.5 * sigma(n) * rho(n)
+    return mpf(3) / 2 * sigma(n) * rho(n)
 
 def compute_B(n):
     """
@@ -46,8 +51,8 @@ def compute_B(n):
     """
     t = tau(n)
     r = rho(n)
-    c1 = np.pi**2 / 2
-    c4 = (2 * r / (2*n + 1)) * np.pi**3
+    c1 = pi**2 / 2
+    c4 = (2 * r / (2*n + 1)) * pi**3
     return t + c1/t - 1/(2*t**2) - 1/((n-1)*t**3) + c4/t**4
 
 def compute_alpha_inverse(n):
@@ -63,17 +68,13 @@ def compute_alpha_inverse(n):
 
 def compute_alpha(n):
     """Compute fine structure constant α"""
-    return 1.0 / compute_alpha_inverse(n)
+    return 1 / compute_alpha_inverse(n)
 
 def compute_mass_ratio(n):
     """
     Compute proton-electron mass ratio (n-explicit factored form):
 
     m_p/m_e = μ·(1 + 2(2n+1)·π·α³) + (1 + 1/(2n))·π²·α·(1-α²) - α²
-
-    The denominators are functions of n:
-      Vertex:  original /4  = /(n/2)  → prefactor 2/n
-      VP:      original /16 = /(2n)   → prefactor (2n+1)/(2n) = 1 + 1/(2n)
 
     Correction taxonomy:
       μ·2(2n+1)·π·α³        — vertex (tree mass × 2·dim(D(n)) dressing)
@@ -83,8 +84,8 @@ def compute_mass_ratio(n):
     m = mu(n)
     alpha = compute_alpha(n)
 
-    vertex_dressed = m * (1 + 2*(2*n+1) * np.pi * alpha**3)
-    vp = (1 + 1/(2*n)) * np.pi**2 * alpha * (1 - alpha**2)
+    vertex_dressed = m * (1 + 2*(2*n+1) * pi * alpha**3)
+    vp = (1 + 1/(2*mpf(n))) * pi**2 * alpha * (1 - alpha**2)
     self_int = -alpha**2
 
     return vertex_dressed + vp + self_int
@@ -95,27 +96,90 @@ def compute_muon_ratio(n, d=3):
 
     m_μ/m_e = (d/2)(τ + πα(1-α²)) + c₁/4 + (d/2)πσα³ - α²
 
-    The muon's structural parameter is d (spatial dimension),
-    in contrast to the proton's n (coordination number):
-      Proton vertex prefactor: 2/n  (lattice topology)
-      Muon vertex prefactor:   d/2  (spatial dimension)
-
     Correction taxonomy (parallel to proton):
       (d/2)·π·α·(1-α²)  — VP (binary excitation, dressed)
-      (d/2)·π·σ·α³       — vertex (= proton vertex × 2d/μ)
+      (d/2)·π·σ·α³       — vertex (binary, = proton vertex × 2d/μ)
       -α²                — self-intersection (universal)
+
+    Tree level: (d/2)·τ + c₁/4 (binary defect + BZ vacuum energy)
     """
+    d = mpf(d)
     t = tau(n)
     s = sigma(n)
-    c1 = np.pi**2 / 2
+    c1 = pi**2 / 2
     alpha = compute_alpha(n)
 
     tree = (d / 2) * t + c1 / 4
-    vp = (d / 2) * np.pi * alpha * (1 - alpha**2)
-    vertex = (d / 2) * np.pi * s * alpha**3
+    vp = (d / 2) * pi * alpha * (1 - alpha**2)
+    vertex = (d / 2) * pi * s * alpha**3
     self_int = -alpha**2
 
     return tree + vp + vertex + self_int
+
+def compute_koide_Q(n, d=3):
+    """
+    Compute dressed Koide parameter Q.
+
+    Q = (d-1)/d + (d-1)·π²·α² / ((n-1)·σ)
+
+    Tree level: (d-1)/d = 2/3 (transverse fraction of line defect)
+    Correction: (d-1)·π²·α²/((n-1)·σ) (transverse normal-bundle dressing)
+
+    Factor decomposition of the correction:
+      (d-1)     — transverse directions (codimension)
+      π²        — BZ momentum integral
+      α²        — two-loop EM coupling
+      1/(n-1)   — spectral variance coefficient (three-loop, = 1/7 at n=8)
+      1/σ       — pairwise channel normalization
+
+    Session XI: identified by systematic scan, interpreted as
+    leading Seeley-DeWitt heat kernel coefficient of the transverse D².
+    """
+    d = mpf(d)
+    s = sigma(n)
+    alpha = compute_alpha(n)
+
+    Q_tree = (d - 1) / d
+    delta_Q = (d - 1) * pi**2 * alpha**2 / ((n - 1) * s)
+
+    return Q_tree + delta_Q
+
+def compute_tau_ratio(n, d=3):
+    """
+    Compute tau-electron mass ratio via dressed Koide formula
+    using the closed-form quadratic solution (Session XII).
+
+    The Koide equation:
+      (m_e + m_μ + m_τ) / (√m_e + √m_μ + √m_τ)² = Q
+
+    with m_e = 1, reduces to a quadratic in x = √m_τ:
+
+      (1 - Q)x² - 2Q(1 + b)x + [(1 + m_μ)(1 - Q) - Q·b²] = 0
+
+    where b = √m_μ. The discriminant factors as:
+
+      D = (1 + m_μ)(2Q - 1) + 2Qb
+
+    and the physical (positive) root is:
+
+      x = [Q(1 + b) + √D] / (1 - Q)
+      m_τ = x²
+
+    Q = (d-1)/d + (d-1)π²α²/((n-1)σ)
+
+    Physical origin: Koide relation is a partition function constraint
+    on the transverse oscillator of the binary line defect, with
+    Q = (d-1)/d being the transverse fraction, dressed by the leading
+    normal-bundle heat kernel correction.
+    """
+    m_mu = compute_muon_ratio(n, d)
+    Q = compute_koide_Q(n, d)
+
+    b = sqrt(m_mu)
+    D = (1 + m_mu) * (2*Q - 1) + 2*Q*b
+    x = (Q * (1 + b) + sqrt(D)) / (1 - Q)
+
+    return x**2
 
 # =============================================================================
 # CONSTANTS AT n = 8
@@ -136,11 +200,15 @@ ALPHA_INV_BSM = compute_alpha_inverse(N)
 ALPHA_BSM = compute_alpha(N)
 MASS_RATIO_BSM = compute_mass_ratio(N)
 MUON_RATIO_BSM = compute_muon_ratio(N)
+KOIDE_Q_BSM = compute_koide_Q(N)
+TAU_RATIO_BSM = compute_tau_ratio(N)
 
 # Measured values (CODATA 2022)
-ALPHA_INV_MEASURED = 137.035999177
-MASS_RATIO_MEASURED = 1836.152673426
-MUON_RATIO_MEASURED = 206.7682827
+ALPHA_INV_MEASURED = mpf('137.035999177')
+MASS_RATIO_MEASURED = mpf('1836.152673426')
+MUON_RATIO_MEASURED = mpf('206.7682827')
+TAU_RATIO_MEASURED = mpf('3477.48')
+TAU_RATIO_UNCERTAINTY = mpf('0.57')
 
 # =============================================================================
 # VERIFICATION
@@ -148,67 +216,65 @@ MUON_RATIO_MEASURED = 206.7682827
 
 if __name__ == '__main__':
     print("=" * 72)
-    print("BSM CORE MODULE — VERIFICATION (CODATA 2022)")
+    print("BSM CORE MODULE — VERIFICATION (CODATA 2022, Session XII)")
+    print(f"Precision: {mp.dps} decimal places (mpmath)")
     print("=" * 72)
-    print(f"\nAt n = {N} (BCC coordination):")
-    print(f"  ρ(8) = {RHO_8}")
-    print(f"  σ(8) = {SIGMA_8}")
-    print(f"  τ(8) = {TAU_8}")
-    print(f"  μ(8) = {MU_8:.0f}")
+    print(f"\nAt n = {N} (BCC coordination), d = {d}:")
+    print(f"  ρ(8) = {int(RHO_8)}")
+    print(f"  σ(8) = {int(SIGMA_8)}")
+    print(f"  τ(8) = {int(TAU_8)}")
+    print(f"  μ(8) = {int(MU_8)}")
 
-    c1 = np.pi**2 / 2
-    c4 = (2*RHO_8/(2*N+1)) * np.pi**3
+    c1 = pi**2 / 2
+    c4 = (2*RHO_8/(2*N+1)) * pi**3
     alpha = ALPHA_BSM
 
-    print(f"\nFine Structure Constant (four-loop):")
+    print(f"\n{'─'*72}")
+    print(f"Fine Structure Constant (four-loop Dyson):")
     print(f"  B = τ + c₁/τ - 1/(2τ²) - 1/((n-1)τ³) + c₄/τ⁴")
-    print(f"  c₁ = π²/2 = {c1:.6f}  (BZ integral)")
+    print(f"  c₁ = π²/2 = {float(c1):.6f}  (BZ integral)")
     print(f"  c₂ = -1/2             (spectral mean)")
     print(f"  c₃ = -1/(n-1) = -1/7  (spectral variance)")
-    print(f"  c₄ = (2ρ/(2n+1))·π³ = (18/17)·π³ = {c4:.6f}  (spectral skewness)")
-    print(f"  B = {B_8:.12f}")
-    print(f"  α⁻¹ = B + 1/[(n+2)B²] = {ALPHA_INV_BSM:.12f}")
+    print(f"  c₄ = (2ρ/(2n+1))·π³ = (18/17)·π³ = {float(c4):.6f}  (spectral skewness)")
+    print(f"  B = {B_8}")
+    print(f"  α⁻¹ = B + 1/[(n+2)B²] = {ALPHA_INV_BSM}")
     print(f"  CODATA 2022            = {ALPHA_INV_MEASURED}(21)")
     err_a = abs(ALPHA_INV_BSM - ALPHA_INV_MEASURED)
-    print(f"  Error = {err_a:.3e} ({err_a/ALPHA_INV_MEASURED*1e9:.4f} ppb)")
+    print(f"  Error = {float(err_a):.3e} ({float(err_a/ALPHA_INV_MEASURED*1e9):.4f} ppb)")
 
-    print(f"\nProton-Electron Mass Ratio (n-explicit):")
+    print(f"\n{'─'*72}")
+    print(f"Proton-Electron Mass Ratio (n-explicit):")
     print(f"  m_p/m_e = μ(1 + 2(2n+1)πα³) + (1 + 1/(2n))π²α(1-α²) - α²")
-    print(f"  Vertex dressing: 2(2n+1)πα³ = 2×{2*N+1}×π×α³ = {2*(2*N+1)*np.pi*alpha**3:.12f}")
-    print(f"  VP (universal):  π²α(1-α²) = {np.pi**2*alpha*(1-alpha**2):.12f}")
-    print(f"  VP (lattice):    1/(2n) = 1/{2*N} correction")
-    print(f"  Self-int:        -α² = {-alpha**2:.12f}")
-    print(f"  m_p/m_e = {MASS_RATIO_BSM:.9f}")
+    print(f"  m_p/m_e = {MASS_RATIO_BSM}")
     print(f"  CODATA 2022 = {MASS_RATIO_MEASURED}(32)")
     err_m = abs(MASS_RATIO_BSM - MASS_RATIO_MEASURED)
-    print(f"  Error = {err_m:.3e} ({err_m/MASS_RATIO_MEASURED*1e9:.2f} ppb)")
+    print(f"  Error = {float(err_m):.3e} ({float(err_m/MASS_RATIO_MEASURED*1e9):.2f} ppb)")
 
-    print(f"\nMuon-Electron Mass Ratio (d-explicit):")
-    tree = (d/2)*TAU_8 + c1/4
-    mu_vp = (d/2)*np.pi*alpha*(1-alpha**2)
-    mu_vt = (d/2)*np.pi*SIGMA_8*alpha**3
-    mu_si = -alpha**2
+    print(f"\n{'─'*72}")
+    print(f"Muon-Electron Mass Ratio (d-explicit):")
     print(f"  m_μ/m_e = (d/2)(τ + πα(1-α²)) + c₁/4 + (d/2)πσα³ - α²")
-    print(f"  Tree:     (d/2)τ + c₁/4        = {tree:.10f}")
-    print(f"  VP:       (d/2)πα(1-α²)         = {mu_vp:.12f}")
-    print(f"  Vertex:   (d/2)πσα³              = {mu_vt:.12f}")
-    print(f"  Self-int: -α²                    = {mu_si:.12f}")
-    print(f"  m_μ/m_e = {MUON_RATIO_BSM:.10f}")
+    print(f"  m_μ/m_e = {MUON_RATIO_BSM}")
     print(f"  CODATA 2022 = {MUON_RATIO_MEASURED}(46)")
     err_mu = abs(MUON_RATIO_BSM - MUON_RATIO_MEASURED)
-    print(f"  Error = {err_mu:.3e} ({err_mu/MUON_RATIO_MEASURED*1e9:.1f} ppb)")
+    print(f"  Error = {float(err_mu):.3e} ({float(err_mu/MUON_RATIO_MEASURED*1e9):.1f} ppb)")
 
-    print(f"\nStructural contrast:")
-    print(f"  Proton structural parameter: n = {N} (coordination number)")
-    print(f"  Muon structural parameter:   d = {d} (spatial dimension)")
-    print(f"  Proton vertex prefactor: 2/n = {2/N}")
-    print(f"  Muon vertex prefactor:   d/2 = {d/2}")
-    print(f"  Proton VP prefactor: (2n+1)/(2n) = {(2*N+1)/(2*N):.6f}")
-    print(f"  Muon VP prefactor:   d/2 = {d/2}")
+    print(f"\n{'─'*72}")
+    print(f"Tau-Electron Mass Ratio (dressed Koide, closed-form):")
+    Q_tree = mpf(d-1)/d
+    delta_Q = mpf(d-1) * pi**2 * alpha**2 / ((N-1) * SIGMA_8)
+    print(f"  Q = (d-1)/d + (d-1)π²α²/((n-1)σ)")
+    print(f"  Q_tree     = {Q_tree}")
+    print(f"  δQ         = {delta_Q}")
+    print(f"  Q_dressed  = {KOIDE_Q_BSM}")
+    print(f"  m_τ/m_e = {TAU_RATIO_BSM}")
+    print(f"  CODATA 2022 = {TAU_RATIO_MEASURED}(57)")
+    err_tau = abs(TAU_RATIO_BSM - TAU_RATIO_MEASURED)
+    print(f"  Error = {float(err_tau):.4f} ({float(err_tau/TAU_RATIO_MEASURED*1e6):.3f} ppm, {float(err_tau/TAU_RATIO_UNCERTAINTY):.4f}σ)")
 
     print(f"\n{'='*72}")
-    print(f"SCORECARD: Three constants, two inputs (n=8, π), zero free parameters")
-    print(f"  α⁻¹    → {err_a/ALPHA_INV_MEASURED*1e9:.4f} ppb")
-    print(f"  m_p/m_e → {err_m/MASS_RATIO_MEASURED*1e9:.2f} ppb")
-    print(f"  m_μ/m_e → {err_mu/MUON_RATIO_MEASURED*1e9:.1f} ppb")
+    print(f"SCORECARD: Four constants, two inputs (n=8, d=3, π), zero free parameters")
+    print(f"  α⁻¹    → {float(err_a/ALPHA_INV_MEASURED*1e9):.4f} ppb")
+    print(f"  m_p/m_e → {float(err_m/MASS_RATIO_MEASURED*1e9):.2f} ppb")
+    print(f"  m_μ/m_e → {float(err_mu/MUON_RATIO_MEASURED*1e9):.1f} ppb")
+    print(f"  m_τ/m_e → {float(err_tau/TAU_RATIO_MEASURED*1e6):.3f} ppm  ({float(err_tau/TAU_RATIO_UNCERTAINTY):.4f}σ)")
     print(f"{'='*72}")

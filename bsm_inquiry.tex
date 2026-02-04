@@ -45,13 +45,15 @@
 \subsection*{1.\ What This Is}
 
 I am an independent researcher exploring a lattice field theory framework
-in which the fine structure constant, the proton-electron mass ratio, and
-the muon-electron mass ratio emerge from the spectral geometry of the BCC
-lattice Dirac operator. The framework takes two inputs---the BCC
-coordination number $n = 8$ and the transcendental $\pi$---and produces
-values for all three constants with zero free parameters. I am writing to
-ask whether you can see a trivial explanation for the coincidences below,
-or whether the lattice selection mechanism has structural content.
+in which the fine structure constant, the proton-electron mass ratio, the
+muon-electron mass ratio, and the tau-electron mass ratio emerge from the
+spectral geometry of the BCC lattice Dirac operator. The framework takes
+two inputs---the BCC coordination number $n = 8$ and the transcendental
+$\pi$---with $d = 3$ (spatial dimensions) entering the muon and tau
+formulas, and produces values for all four constants with zero free
+parameters. I am writing to ask whether you can see a trivial explanation
+for the coincidences below, or whether the lattice selection mechanism has
+structural content.
 
 % -- 2 --
 \subsection*{2.\ Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
@@ -179,7 +181,62 @@ Agreement & $1.1\ppb$ \quad ($0.05\sigma$) \\
 \end{table}
 
 % -- 6 --
-\subsection*{6.\ Lattice Selection: Why BCC?}
+\subsection*{6.\ Result 4: The Tau-Electron Mass Ratio}
+
+The tau lepton mass is predicted by dressing the Koide relation. Yoshio
+Koide (1982) observed empirically that
+$(m_e + m_\mu + m_\tau)/(\sqrt{m_e} + \sqrt{m_\mu} + \sqrt{m_\tau})^2
+\approx 2/3$.  In the lattice framework, the binary defect is a
+1-dimensional line segment in $d$~spatial dimensions; its normal bundle
+has fiber dimension $d{-}1 = 2$, giving a transverse fraction
+$(d{-}1)/d = 2/3$.  This tree-level constant receives a radiative
+correction from the same spectral ingredients that enter the $\alpha$
+formula:
+
+\begin{equation*}
+  \boxed{Q = \frac{d{-}1}{d}
+    + \frac{(d{-}1)\,\pi^2\alpha^2}{(n{-}1)\,\sigma}}, \qquad
+  \frac{m_e + m_\mu + m_\tau}
+       {(\sqrt{m_e} + \sqrt{m_\mu} + \sqrt{m_\tau})^{\,2}} = Q
+\end{equation*}
+
+The correction $\delta Q = (d{-}1)\pi^2\alpha^2/\!\bigl((n{-}1)\sigma\bigr)$
+decomposes as:
+\begin{itemize}[nosep,leftmargin=1.5em]
+  \item $(d{-}1)$ --- transverse codimension (number of normal directions)
+  \item $\pi^2$ --- BZ momentum integral (same $\pi^2$ as $c_1$ in Result~1)
+  \item $\alpha^2$ --- two-loop EM coupling
+  \item $1/(n{-}1) = 1/7$ --- spectral variance (same as $c_3$ in Result~1)
+  \item $1/\sigma = 1/136$ --- pairwise channel normalization
+\end{itemize}
+
+With $m_e = 1$ and $m_\mu$ from Result~3, the Koide equation reduces to a
+quadratic in $x = \sqrt{m_\tau}$ with closed-form solution:
+\begin{equation*}
+  x = \frac{Q(1 + \sqrt{m_\mu}\,) + \sqrt{(1 + m_\mu)(2Q{-}1) + 2Q\sqrt{m_\mu}}}{1 - Q}\,,
+  \qquad m_\tau = x^2
+\end{equation*}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lc}
+\toprule
+Lattice framework prediction & $3477.4799$ \\
+CODATA 2022 & $3477.48 \pm 0.57$ \\
+Agreement & $0.027\,\mathrm{ppm}$ \quad ($0.0002\sigma$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textit{Note:} The bare Koide constant $Q = 2/3$ gives $m_\tau/m_e = 3477.44$
+(11\,ppm, $0.07\sigma$).  The dressed $Q$ improves this by a factor of~415.
+The correction was identified by systematic numerical scan and interpreted
+geometrically as the leading Seeley--DeWitt heat kernel coefficient of the
+transverse Laplacian on the binary defect; a first-principles derivation from
+the lattice Lagrangian remains an open problem.
+
+% -- 7 --
+\subsection*{7.\ Lattice Selection: Why BCC?}
 
 Tested against SC ($n = 6$) and FCC ($n = 12$). The tree-level mass
 generator $\mu(n)$ is the discriminator:
@@ -206,8 +263,8 @@ for cubic lattices (first two loop corrections identical). Discrimination enters
 at three loops via spectral variance and, decisively, through $\mu(n)$: no
 perturbative correction bridges SC's 55\% mass deficit.
 
-% -- 7 --
-\subsection*{7.\ Questions for the Reader}
+% -- 8 --
+\subsection*{8.\ Questions for the Reader}
 
 \begin{enumerate}[label=(\alph*),nosep,leftmargin=1.5em]
   \item Is there a trivial or known reason why polynomials of 8 produce
@@ -222,6 +279,14 @@ perturbative correction bridges SC's 55\% mass deficit.
     correspond to anything in defect field theory?
   \item Is the SC/BCC near-degeneracy for $\ainv$
     (via $\langle D^2\rangle = 2d$) interesting or expected?
+  \item The dressed Koide correction uses $1/(n{-}1)$ (spectral
+    variance) and $1/\sigma$ (pairwise channels)---the same quantities
+    appearing in the $\ainv$ expansion. Is there a known mechanism by
+    which a constraint on mass \emph{ratios} receives radiative
+    corrections from the same spectral coefficients as a coupling?
+  \item The interpretation $Q = (d{-}1)/d$ identifies the Koide constant
+    with the transverse fraction of a line defect. Does this codimensional
+    constraint have precedent in defect field theory or conformal field theory?
 \end{enumerate}
 
 \medskip
@@ -236,23 +301,29 @@ explanation. Full paper (\LaTeX) available on request.
 \subsection*{Appendix: Verification Code (Python)}
 
 \begin{Verbatim}[fontsize=\footnotesize]
-import numpy as np
+from mpmath import mp, mpf, pi, sqrt
+mp.dps = 50
 def tau(n): return n*(2*n+1)+1
 def sigma(n): return n*(2*n+1)
-def mu(n): return 1.5*sigma(n)*(n+1)
+def mu(n): return mpf(3)/2*sigma(n)*(n+1)
 N = 8; d = 3
-TAU, SIGMA, RHO, MU = tau(N), sigma(N), N+1, mu(N)
-c1 = np.pi**2 / 2
-c4 = (2*RHO/(2*N+1)) * np.pi**3
+TAU, SIGMA, RHO, MU = mpf(tau(N)), mpf(sigma(N)), mpf(N+1), mu(N)
+c1 = pi**2 / 2
+c4 = (2*RHO/(2*N+1)) * pi**3
 B = TAU + c1/TAU - 1/(2*TAU**2) - 1/((N-1)*TAU**3) + c4/TAU**4
 alpha_inv = B + 1/((N+2)*B**2); alpha = 1/alpha_inv
-mass = MU*(1+2*(2*N+1)*np.pi*alpha**3) \
-       + (1+1/(2*N))*np.pi**2*alpha*(1-alpha**2) - alpha**2
-muon = (d/2)*(TAU+np.pi*alpha*(1-alpha**2)) \
-       + c1/4 + (d/2)*np.pi*SIGMA*alpha**3 - alpha**2
-print(f"alpha^-1  = {alpha_inv:.12f}")  # 137.035999177
-print(f"m_p/m_e   = {mass:.9f}")        # 1836.152673485
-print(f"m_mu/m_e  = {muon:.10f}")       # 206.7682824754
+mass = MU*(1+2*(2*N+1)*pi*alpha**3) \
+       + (1+1/(2*N))*pi**2*alpha*(1-alpha**2) - alpha**2
+muon = mpf(d)/2*(TAU+pi*alpha*(1-alpha**2)) \
+       + c1/4 + mpf(d)/2*pi*SIGMA*alpha**3 - alpha**2
+Q = mpf(d-1)/d + mpf(d-1)*pi**2*alpha**2/((N-1)*SIGMA)
+b = sqrt(muon)
+D = (1 + muon)*(2*Q - 1) + 2*Q*b
+tau_mass = ((Q*(1+b) + sqrt(D)) / (1-Q))**2
+print(f"alpha^-1  = {alpha_inv}")   # 137.035999177...
+print(f"m_p/m_e   = {mass}")        # 1836.15267348...
+print(f"m_mu/m_e  = {muon}")        # 206.768282475...
+print(f"m_tau/m_e = {tau_mass}")    # 3477.47990762...
 \end{Verbatim}
 
 \vspace{4pt}
