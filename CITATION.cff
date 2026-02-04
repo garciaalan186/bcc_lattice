@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+type: dataset
+title: "Numerical Coincidences from a BCC Lattice Framework"
+abstract: >-
+  A lattice field theory framework in which the fine structure constant
+  and the proton-electron mass ratio emerge from the spectral geometry
+  of the body-centered cubic (BCC) lattice Dirac operator. The framework
+  takes two inputs — the BCC coordination number n = 8 and π — and
+  produces values for both constants with zero free parameters, achieving
+  agreement with CODATA 2018 values to better than 0.005 ppb and 0.03 ppb,
+  respectively.
+authors:
+  - family-names: Garcia
+    given-names: Alan
+    email: alan.javier.garcia@gmail.com
+keywords:
+  - fine structure constant
+  - proton-electron mass ratio
+  - lattice field theory
+  - BCC lattice
+  - Dirac operator
+  - SO(3) representation theory
+  - fundamental constants
+license: CC-BY-4.0
+date-released: "2026-02-04"
+doi: 10.5281/zenodo.18478082
