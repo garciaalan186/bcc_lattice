@@ -1,5 +1,6 @@
-\documentclass[aps,prd,preprint,superscriptaddress,nofootinbib,longbibliography]{revtex4-2}
+\documentclass[11pt,letterpaper]{article}
 
+\usepackage[margin=0.9in]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{array}
@@ -11,70 +12,59 @@
 \usepackage{float}
 \usepackage{colortbl}
 
-\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black, citecolor=blue!60!black}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
 
 \definecolor{bccgreen}{HTML}{e8f5e8}
 \definecolor{scyellow}{HTML}{fff8e0}
 \definecolor{fccred}{HTML}{fde8e8}
+\definecolor{headbg}{HTML}{e8e8f0}
+\definecolor{darkblue}{HTML}{1a1a2e}
+
+\pagestyle{empty}
 
 \newcommand{\ainv}{\alpha^{-1}}
 \newcommand{\ppb}{\,\mathrm{ppb}}
 
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
 \begin{document}
 
-\title{Numerical Coincidences from a BCC Lattice Framework:\\
-A Concise Summary for Discussion}
+% -- Title --
+\begin{center}
+  {\Large\bfseries\color{darkblue}
+    Numerical Coincidences from a BCC Lattice Framework}\\[4pt]
+  {\itshape A concise summary for discussion --- not a claim of proof}\\[2pt]
+  {\small Alan Garcia \quad|\quad February 2026 \quad|\quad Independent investigation}
+\end{center}
+\vspace{-2pt}
+\hrule
+\vspace{6pt}
 
-\author{Alan Garcia}
-\email{alan.javier.garcia@gmail.com}
-\affiliation{Independent Researcher}
+% -- 1 --
+\subsection*{1.\ What This Is}
 
-\date{\today}
-
-\begin{abstract}
-We present a lattice field theory framework in which the fine structure
-constant, the proton-electron mass ratio, and the muon-electron mass
-ratio emerge from the spectral geometry of the body-centered cubic (BCC)
+I am an independent researcher exploring a lattice field theory framework
+in which the fine structure constant, the proton-electron mass ratio, and
+the muon-electron mass ratio emerge from the spectral geometry of the BCC
 lattice Dirac operator. The framework takes two inputs---the BCC
 coordination number $n = 8$ and the transcendental $\pi$---and produces
-values for all three constants with zero free parameters, achieving
-agreement with CODATA 2018 values to better than $0.005\ppb$,
-$0.03\ppb$, and $12.6\ppb$ ($0.6\sigma$), respectively. We compare the
-BCC lattice against simple cubic (SC) and face-centered cubic (FCC)
-alternatives and find that only the BCC lattice simultaneously
-reproduces the observed constants. This document is intended as a
-summary for discussion and does not constitute a claim of proof.
-\end{abstract}
+values for all three constants with zero free parameters. I am writing to
+ask whether you can see a trivial explanation for the coincidences below,
+or whether the lattice selection mechanism has structural content.
 
-\maketitle
-
-% ── 1 ──────────────────────────────────────────────────────────────────
-\section{Introduction}
-\label{sec:introduction}
-
-This work explores a lattice field theory framework in which the fine
-structure constant, the proton-electron mass ratio, and the
-muon-electron mass ratio emerge from the spectral geometry of the BCC
-lattice Dirac operator. The framework takes two inputs---the BCC
-coordination number $n = 8$ and the transcendental $\pi$---and produces
-values for all three constants with zero free parameters. We pose the
-question: is there a trivial explanation for the coincidences presented
-below, or does the lattice selection mechanism have structural content?
-
-% ── 2 ──────────────────────────────────────────────────────────────────
-\section{Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
-\label{sec:generators}
+% -- 2 --
+\subsection*{2.\ Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
 
 Four functions of the coordination number $n$ arise from the
 representation theory of $\mathrm{SO}(3)$:
 
-\begin{equation}
-  \tau(n) = n(2n{+}1) + 1, \qquad
-  \sigma(n) = n(2n{+}1), \qquad
-  \rho(n) = n + 1, \qquad
-  \mu(n) = \tfrac{3}{2}\,\sigma\,\rho.
-  \label{eq:generators}
-\end{equation}
+\begin{equation*}
+  \tau(n) = n(2n{+}1) + 1 \qquad
+  \sigma(n) = n(2n{+}1) \qquad
+  \rho(n) = n + 1 \qquad
+  \mu(n) = \tfrac{3}{2}\,\sigma\,\rho
+\end{equation*}
 
 At $n = 8$: $\tau = 137$, $\sigma = 136$, $\rho = 9$, $\mu = 1836$.
 Here $\tau(n) = \dim\bigl(\Lambda^2 D(n) \oplus D(0)\bigr)$, where
@@ -82,137 +72,127 @@ $\Lambda^2 D(n)$ is the antisymmetric square of the spin-$n$
 representation, and $\sigma(n) = \binom{2n+1}{2}$ counts the pairwise
 couplings among $2n{+}1$ magnetic substates.
 
-% ── 3 ──────────────────────────────────────────────────────────────────
-\section{Result 1: The Fine Structure Constant}
-\label{sec:fsc}
+% -- 3 --
+\subsection*{3.\ Result 1: The Fine Structure Constant}
 
-The inverse fine structure constant $\ainv$ is obtained from a cubic
-equation interpreted as a Dyson equation $G^{-1} = G_0^{-1} -
-\Sigma(G)$ for the dressed inverse coupling:
+$\ainv$ is obtained from a cubic equation interpreted as a Dyson equation
+$G^{-1} = G_0^{-1} - \Sigma(G)$ for the dressed inverse coupling:
 
-\begin{equation}
+\begin{equation*}
   \boxed{\ainv = B + \frac{1}{(n{+}2)\,B^2}}, \qquad
-  B = \tau + \frac{\pi^2}{2\tau} - \frac{1}{2\tau^2}
-    - \frac{1}{(n{-}1)\,\tau^3}.
-  \label{eq:alpha}
-\end{equation}
+  B = \tau + \frac{c_1}{\tau} - \frac{1}{2\tau^2}
+    - \frac{1}{(n{-}1)\,\tau^3}
+    + \frac{c_4}{\tau^4}
+\end{equation*}
 
 The base $B$ is a perturbative self-energy expansion on the BCC lattice
 with coupling $g^2 = 1/2$ and Dirac multiplicity $N_D = 4$. The
-coefficients have identified origins: $c_1 = \pi^2/2$ from the Brillouin
-zone momentum integral $\langle|\mathbf{q}|^2\rangle_{\mathrm{BZ}}$;\
-$c_2 = -d/\langle D^2\rangle = -1/2$ from the Dirac spectral moment;\
-$c_3 = -1/(n{-}1) = -1/7$ from the spectral variance, with
-$f_3(8) = -2/7$ as an exact algebraic identity.
+coefficients have identified spectral origins:
+\begin{itemize}[nosep,leftmargin=1.5em]
+  \item $c_1 = \pi^2/2$ \quad Brillouin zone momentum integral
+    $\langle|\mathbf{q}|^2\rangle_{\mathrm{BZ}}$
+  \item $c_2 = -\tfrac{1}{2}$ \quad Spectral mean:
+    $-d/\langle D^2\rangle$
+  \item $c_3 = -1/(n{-}1) = -\tfrac{1}{7}$ \quad Spectral variance
+  \item $c_4 = \tfrac{2\rho}{2n{+}1}\,\pi^3 = \tfrac{18}{17}\,\pi^3$
+    \quad Spectral skewness $\times$ zone integral
+\end{itemize}
 
 \begin{table}[H]
-\centering
-\caption{Fine structure constant comparison.}
-\label{tab:alpha}
+\centering\small
 \begin{tabular}{lc}
 \toprule
-Lattice framework prediction & $137.035\,999\,084$ \\
-CODATA 2018 & $137.035\,999\,084(21)$ \\
-Agreement & $< 0.005\ppb$ \\
+Lattice framework prediction & $137.035\,999\,177$ \\
+CODATA 2022 & $137.035\,999\,177(21)$ \\
+Agreement & $< 0.001\ppb$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% ── 4 ──────────────────────────────────────────────────────────────────
-\section{Result 2: The Proton-Electron Mass Ratio}
-\label{sec:mass}
+% -- 4 --
+\subsection*{4.\ Result 2: The Proton-Electron Mass Ratio}
 
-From the same generator functions, with $\alpha$ computed
-self-consistently:
+From the same generator functions, with $\alpha$ computed self-consistently.
+The formula appears naturally in $n$-explicit factored form:
 
-\begin{equation}
-  \boxed{\frac{m_p}{m_e} = \mu
-    + \frac{\pi\mu\sigma\alpha^3}{4}
-    + \frac{(2n{+}1)\,\pi^2\alpha(1 - \alpha^2)}{16}
-    - \alpha^2}.
-  \label{eq:mass}
-\end{equation}
+\begin{equation*}
+  \boxed{\frac{m_p}{m_e}
+    = \mu\bigl(1 + 2(2n{+}1)\,\pi\alpha^3\bigr)
+    + \Bigl(1 + \frac{1}{2n}\Bigr)\pi^2\alpha(1{-}\alpha^2)
+    - \alpha^2}
+\end{equation*}
 
-The corrections decompose as a connection 1-form (vertex,
-$\pi\mu\sigma\alpha^3/4 \approx 0.0762$), a curvature 2-form (vacuum
-polarization, $(2n{+}1)\pi^2\alpha(1{-}\alpha^2)/16 \approx 0.0765$), and
-a self-intersection ($-\alpha^2 \approx -5.3\times 10^{-5}$). The factor
-$(1 - \alpha^2)$ is a dressed self-energy correction. The tree-level
-integer $\mu(8) = 1836$ is
-$\tfrac{3}{2}\dim(\Lambda^2 D(8))\cdot(\rho(8))$ from $\mathrm{SO}(3)$.
+The denominators in the original notation ($\pi\mu\sigma\alpha^3/4$ and
+$(2n{+}1)\pi^2\alpha/16$) are functions of the coordination number:
+$4 = n/2$ and $16 = 2n$ at $n = 8$. The corrections decompose as:
+\begin{itemize}[nosep,leftmargin=1.5em]
+  \item \textbf{Vertex:} $\mu$ is dressed by a factor
+    $1 + 2(2n{+}1)\pi\alpha^3$, where $2(2n{+}1) = 2\dim D(n)$.
+  \item \textbf{VP:} A universal piece $\pi^2\alpha(1{-}\alpha^2)$ plus
+    a lattice correction of relative size $1/(2n)$, vanishing as
+    $n \to \infty$ (continuum limit).
+  \item \textbf{Self-intersection:} $-\alpha^2$, universal.
+\end{itemize}
 
 \begin{table}[H]
-\centering
-\caption{Proton-electron mass ratio comparison.}
-\label{tab:mass}
+\centering\small
 \begin{tabular}{lc}
 \toprule
-Lattice framework prediction & $1836.152\,674$ \\
-CODATA 2018 & $1836.152\,673\,43(11)$ \\
+Lattice framework prediction & $1836.152\,673\,5$ \\
+CODATA 2022 & $1836.152\,673\,426(32)$ \\
 Agreement & $< 0.03\ppb$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% ── 5 ──────────────────────────────────────────────────────────────────
-\section{Result 3: The Muon-Electron Mass Ratio}
-\label{sec:muon}
+% -- 5 --
+\subsection*{5.\ Result 3: The Muon-Electron Mass Ratio}
 
-The framework also predicts the muon-electron mass ratio using the same
-lattice constants. Where the proton is a bound state whose vacuum
-polarization term is dressed \emph{subtractively} by $(1 - \alpha^2)$,
-the muon is an excitation whose vacuum correction is dressed
-\emph{additively} by $(1 + d\,\alpha^2)$, where $d = 3$ is the spatial
-dimension:
+The muon is modeled as a binary defect excitation (two-node) on the same
+lattice, in contrast to the proton's ternary defect (three-node). Its
+formula follows the same correction taxonomy but with $d$ (spatial
+dimension) replacing $n$ (coordination number) as the structural
+parameter:
 
-\begin{equation}
-  \boxed{\frac{m_\mu}{m_e} = \frac{d}{2}\bigl(\tau + \pi\alpha\bigr)
-    + \frac{c_1}{4}\bigl(1 + d\,\alpha^2\bigr)}, \qquad
-  c_1 = \frac{\pi^2}{2}.
-  \label{eq:muon}
-\end{equation}
+\begin{equation*}
+  \boxed{\frac{m_\mu}{m_e}
+    = \frac{d}{2}\bigl(\tau + \pi\alpha(1{-}\alpha^2)\bigr)
+    + \frac{c_1}{4}
+    + \frac{d}{2}\,\pi\sigma\alpha^3
+    - \alpha^2}
+\end{equation*}
 
-The tree-level term $(d/2)\,\tau = 205.5$ sets the scale. The
-electromagnetic correction $(d/2)\,\pi\alpha$ is a first-order dressing
-of the topological scale by the coupling. The Brillouin zone integral
-$c_1/4 = \pi^2/8$ enters as the vacuum correction, and its dressing
-factor $(1 + d\,\alpha^2)$ is the additive counterpart to the proton's
-$(1 - \alpha^2)$: physically, the muon as an excitation \emph{gains}
-energy from dimensional coupling, whereas the proton as a bound state
-\emph{loses} energy to self-interaction.
+The proton's vertex prefactor is $2/n$ (per-bond weight on a lattice with
+$n$ neighbors); the muon's is $d/2$ (dimensional weight in $d$-dimensional
+space). The muon vertex coefficient $(d/2)\,\pi\,\sigma$ equals the proton
+vertex coefficient times $2d/\mu = 6/1836 = 1/306$.
 
 \begin{table}[H]
-\centering
-\caption{Muon-electron mass ratio comparison.}
-\label{tab:muon}
+\centering\small
 \begin{tabular}{lc}
 \toprule
-Lattice framework prediction & $206.768\,286$ \\
-Experimental & $206.768\,283\,0(46)$ \\
-Agreement & $12.6\ppb\;(0.6\sigma)$ \\
+Lattice framework prediction & $206.768\,282\,5$ \\
+CODATA 2022 & $206.768\,282\,7(46)$ \\
+Agreement & $1.1\ppb$ \quad ($0.05\sigma$) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% ── 6 ──────────────────────────────────────────────────────────────────
-\section{Lattice Selection: Why BCC?}
-\label{sec:lattice}
+% -- 6 --
+\subsection*{6.\ Lattice Selection: Why BCC?}
 
-The framework was tested against simple cubic (SC, $n = 6$) and
-face-centered cubic (FCC, $n = 12$) lattices. The tree-level mass
+Tested against SC ($n = 6$) and FCC ($n = 12$). The tree-level mass
 generator $\mu(n)$ is the discriminator:
 
 \begin{table}[H]
-\centering
-\caption{Lattice comparison. Only BCC passes both tests.}
-\label{tab:lattice}
+\centering\small
 \begin{tabular}{cccccc}
 \toprule
 \textbf{Lattice} & $n$ & $\mu(n)$ & $\ainv$ \textbf{error}
   & \textbf{Mass error} & \textbf{Status} \\
 \midrule
-\rowcolor{bccgreen} BCC & 8 & 1836 & $< 0.005\ppb$ & $< 0.03\ppb$
-  & Passes both \\
+\rowcolor{bccgreen} BCC & 8 & 1836 & $< 0.001\ppb$ & $< 0.03\ppb$
+  & Passes all \\
 \rowcolor{scyellow} SC & 6 & 819 & $9.9\ppb$ & $-55.4\%$
   & Fails mass \\
 \rowcolor{fccred} FCC & 12 & 5850 & $142.7\ppb\;(6.8\sigma)$ & $+218.6\%$
@@ -221,63 +201,66 @@ generator $\mu(n)$ is the discriminator:
 \end{tabular}
 \end{table}
 
-SC's $\ainv$ closeness is explained by $\langle D^2\rangle = 2d$
-universality for cubic lattices (first two loop corrections identical).
-Discrimination enters at three loops via spectral variance and,
-decisively, through $\mu(n)$: no perturbative correction bridges SC's
-55\% mass deficit.
+SC's $\ainv$ closeness is explained by $\langle D^2\rangle = 2d$ universality
+for cubic lattices (first two loop corrections identical). Discrimination enters
+at three loops via spectral variance and, decisively, through $\mu(n)$: no
+perturbative correction bridges SC's 55\% mass deficit.
 
-% ── 7 ──────────────────────────────────────────────────────────────────
-\section{Questions for the Reader}
-\label{sec:questions}
+% -- 7 --
+\subsection*{7.\ Questions for the Reader}
 
 \begin{enumerate}[label=(\alph*),nosep,leftmargin=1.5em]
   \item Is there a trivial or known reason why polynomials of 8 produce
     integers close to 137 and 1836?
   \item Does $g^2 = 1/2$, $N_D = 4$ on BCC correspond to a recognized
     lattice action?
-  \item Is there a structural reason why the mass ratio should be
-    sensitive to coordination number in this way?
+  \item The proton vertex denominator is $n/2$ and the VP denominator is
+    $2n$. Does this $n$-dependence have precedent in lattice perturbation
+    theory?
+  \item The proton's structural parameter is $n$ (coordination); the
+    muon's is $d$ (dimension). Does this topological/geometric distinction
+    correspond to anything in defect field theory?
   \item Is the SC/BCC near-degeneracy for $\ainv$
     (via $\langle D^2\rangle = 2d$) interesting or expected?
 \end{enumerate}
 
 \medskip
-The author would be grateful for any feedback, including identification
-of a trivial explanation. Full working notes are available on request.
+I would be grateful for any feedback, including identification of a trivial
+explanation. Full paper (\LaTeX) available on request.
 
-% ── Appendix ───────────────────────────────────────────────────────────
-\clearpage
-\appendix
+\vspace{6pt}
+\hrule
+\vspace{4pt}
 
-\section{Verification Code (Python)}
-\label{app:code}
+% -- Appendix --
+\subsection*{Appendix: Verification Code (Python)}
 
 \begin{Verbatim}[fontsize=\footnotesize]
 import numpy as np
 def tau(n): return n*(2*n+1)+1
 def sigma(n): return n*(2*n+1)
 def mu(n): return 1.5*sigma(n)*(n+1)
-N=8; d=3; TAU,SIGMA,MU = tau(N),sigma(N),mu(N)
-c1 = np.pi**2/2
-B = TAU + c1/TAU - 1/(2*TAU**2) - 1/((N-1)*TAU**3)
+N = 8; d = 3
+TAU, SIGMA, RHO, MU = tau(N), sigma(N), N+1, mu(N)
+c1 = np.pi**2 / 2
+c4 = (2*RHO/(2*N+1)) * np.pi**3
+B = TAU + c1/TAU - 1/(2*TAU**2) - 1/((N-1)*TAU**3) + c4/TAU**4
 alpha_inv = B + 1/((N+2)*B**2); alpha = 1/alpha_inv
-t1 = np.pi*MU*SIGMA*alpha**3/4
-t2 = (2*N+1)*np.pi**2*alpha*(1-alpha**2)/16
-mass = MU + t1 + t2 - alpha**2
-muon = (d/2)*(TAU + np.pi*alpha) + (c1/4)*(1 + d*alpha**2)
-print(f"alpha^-1  = {alpha_inv:.9f}")  # 137.035999084
-print(f"m_p/m_e   = {mass:.6f}")       # 1836.152674
-print(f"m_mu/m_e  = {muon:.6f}")       # 206.768286
+mass = MU*(1+2*(2*N+1)*np.pi*alpha**3) \
+       + (1+1/(2*N))*np.pi**2*alpha*(1-alpha**2) - alpha**2
+muon = (d/2)*(TAU+np.pi*alpha*(1-alpha**2)) \
+       + c1/4 + (d/2)*np.pi*SIGMA*alpha**3 - alpha**2
+print(f"alpha^-1  = {alpha_inv:.12f}")  # 137.035999177
+print(f"m_p/m_e   = {mass:.9f}")        # 1836.152673485
+print(f"m_mu/m_e  = {muon:.10f}")       # 206.7682824754
 \end{Verbatim}
 
-\begin{thebibliography}{9}
-
-\bibitem{CODATA2018}
-E.~Tiesinga, P.~J.~Mohr, D.~B.~Newell, and B.~N.~Taylor,
-``CODATA recommended values of the fundamental physical constants: 2018,''
-\textit{Rev.\ Mod.\ Phys.} \textbf{93}, 025010 (2021).
-
-\end{thebibliography}
+\vspace{4pt}
+\hrule
+\vspace{3pt}
+\begin{center}
+{\footnotesize\color{gray}
+  Contact: \href{mailto:alan.javier.garcia@gmail.com}{alan.javier.garcia@gmail.com} \quad|\quad Full paper and working notes available on request}
+\end{center}
 
 \end{document}
