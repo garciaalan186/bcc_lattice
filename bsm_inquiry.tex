@@ -33,16 +33,17 @@ A Concise Summary for Discussion}
 
 \begin{abstract}
 We present a lattice field theory framework in which the fine structure
-constant and the proton-electron mass ratio emerge from the spectral
-geometry of the body-centered cubic (BCC) lattice Dirac operator. The
-framework takes two inputs---the BCC coordination number $n = 8$ and the
-transcendental $\pi$---and produces values for both constants with zero
-free parameters, achieving agreement with CODATA 2018 values to better
-than $0.005\ppb$ and $0.03\ppb$, respectively. We compare the BCC
-lattice against simple cubic (SC) and face-centered cubic (FCC)
+constant, the proton-electron mass ratio, and the muon-electron mass
+ratio emerge from the spectral geometry of the body-centered cubic (BCC)
+lattice Dirac operator. The framework takes two inputs---the BCC
+coordination number $n = 8$ and the transcendental $\pi$---and produces
+values for all three constants with zero free parameters, achieving
+agreement with CODATA 2018 values to better than $0.005\ppb$,
+$0.03\ppb$, and $12.6\ppb$ ($0.6\sigma$), respectively. We compare the
+BCC lattice against simple cubic (SC) and face-centered cubic (FCC)
 alternatives and find that only the BCC lattice simultaneously
-reproduces both constants. This document is intended as a summary for
-discussion and does not constitute a claim of proof.
+reproduces the observed constants. This document is intended as a
+summary for discussion and does not constitute a claim of proof.
 \end{abstract}
 
 \maketitle
@@ -52,13 +53,13 @@ discussion and does not constitute a claim of proof.
 \label{sec:introduction}
 
 This work explores a lattice field theory framework in which the fine
-structure constant and the proton-electron mass ratio emerge from the
-spectral geometry of the BCC lattice Dirac operator. The framework takes
-two inputs---the BCC coordination number $n = 8$ and the transcendental
-$\pi$---and produces values for both constants with zero free
-parameters. We pose the question: is there a trivial explanation for the
-coincidences presented below, or does the lattice selection mechanism
-have structural content?
+structure constant, the proton-electron mass ratio, and the
+muon-electron mass ratio emerge from the spectral geometry of the BCC
+lattice Dirac operator. The framework takes two inputs---the BCC
+coordination number $n = 8$ and the transcendental $\pi$---and produces
+values for all three constants with zero free parameters. We pose the
+question: is there a trivial explanation for the coincidences presented
+below, or does the lattice selection mechanism have structural content?
 
 % ── 2 ──────────────────────────────────────────────────────────────────
 \section{Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
@@ -154,6 +155,46 @@ Agreement & $< 0.03\ppb$ \\
 \end{table}
 
 % ── 5 ──────────────────────────────────────────────────────────────────
+\section{Result 3: The Muon-Electron Mass Ratio}
+\label{sec:muon}
+
+The framework also predicts the muon-electron mass ratio using the same
+lattice constants. Where the proton is a bound state whose vacuum
+polarization term is dressed \emph{subtractively} by $(1 - \alpha^2)$,
+the muon is an excitation whose vacuum correction is dressed
+\emph{additively} by $(1 + d\,\alpha^2)$, where $d = 3$ is the spatial
+dimension:
+
+\begin{equation}
+  \boxed{\frac{m_\mu}{m_e} = \frac{d}{2}\bigl(\tau + \pi\alpha\bigr)
+    + \frac{c_1}{4}\bigl(1 + d\,\alpha^2\bigr)}, \qquad
+  c_1 = \frac{\pi^2}{2}.
+  \label{eq:muon}
+\end{equation}
+
+The tree-level term $(d/2)\,\tau = 205.5$ sets the scale. The
+electromagnetic correction $(d/2)\,\pi\alpha$ is a first-order dressing
+of the topological scale by the coupling. The Brillouin zone integral
+$c_1/4 = \pi^2/8$ enters as the vacuum correction, and its dressing
+factor $(1 + d\,\alpha^2)$ is the additive counterpart to the proton's
+$(1 - \alpha^2)$: physically, the muon as an excitation \emph{gains}
+energy from dimensional coupling, whereas the proton as a bound state
+\emph{loses} energy to self-interaction.
+
+\begin{table}[H]
+\centering
+\caption{Muon-electron mass ratio comparison.}
+\label{tab:muon}
+\begin{tabular}{lc}
+\toprule
+Lattice framework prediction & $206.768\,286$ \\
+Experimental & $206.768\,283\,0(46)$ \\
+Agreement & $12.6\ppb\;(0.6\sigma)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ── 6 ──────────────────────────────────────────────────────────────────
 \section{Lattice Selection: Why BCC?}
 \label{sec:lattice}
 
@@ -186,7 +227,7 @@ Discrimination enters at three loops via spectral variance and,
 decisively, through $\mu(n)$: no perturbative correction bridges SC's
 55\% mass deficit.
 
-% ── 6 ──────────────────────────────────────────────────────────────────
+% ── 7 ──────────────────────────────────────────────────────────────────
 \section{Questions for the Reader}
 \label{sec:questions}
 
@@ -217,14 +258,17 @@ import numpy as np
 def tau(n): return n*(2*n+1)+1
 def sigma(n): return n*(2*n+1)
 def mu(n): return 1.5*sigma(n)*(n+1)
-N=8; TAU,SIGMA,MU = tau(N),sigma(N),mu(N)
-B = TAU + np.pi**2/(2*TAU) - 1/(2*TAU**2) - 1/((N-1)*TAU**3)
+N=8; d=3; TAU,SIGMA,MU = tau(N),sigma(N),mu(N)
+c1 = np.pi**2/2
+B = TAU + c1/TAU - 1/(2*TAU**2) - 1/((N-1)*TAU**3)
 alpha_inv = B + 1/((N+2)*B**2); alpha = 1/alpha_inv
 t1 = np.pi*MU*SIGMA*alpha**3/4
 t2 = (2*N+1)*np.pi**2*alpha*(1-alpha**2)/16
 mass = MU + t1 + t2 - alpha**2
-print(f"alpha^-1 = {alpha_inv:.9f}")  # 137.035999084
-print(f"m_p/m_e  = {mass:.6f}")       # 1836.152674
+muon = (d/2)*(TAU + np.pi*alpha) + (c1/4)*(1 + d*alpha**2)
+print(f"alpha^-1  = {alpha_inv:.9f}")  # 137.035999084
+print(f"m_p/m_e   = {mass:.6f}")       # 1836.152674
+print(f"m_mu/m_e  = {muon:.6f}")       # 206.768286
 \end{Verbatim}
 
 \begin{thebibliography}{9}

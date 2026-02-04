@@ -23,5 +23,9 @@ keywords:
   - SO(3) representation theory
   - fundamental constants
 license: CC-BY-4.0
+doi: "10.5281/zenodo.18478082"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.18478082"
+    description: "Zenodo archive of this work"
 date-released: "2026-02-04"
-doi: 10.5281/zenodo.18478082
