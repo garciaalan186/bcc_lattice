@@ -3,6 +3,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18478082.svg)](https://doi.org/10.5281/zenodo.18478082)
 
 **Author:** Alan Garcia — Software Engineer
+
 **Contact:** alan.javier.garcia@gmail.com
 
 ## How This Started
