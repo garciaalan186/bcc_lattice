@@ -24,7 +24,13 @@ b = sqrt(muon)
 D = (1 + muon)*(2*Q - 1) + 2*Q*b
 tau_mass = ((Q*(1+b) + sqrt(D)) / (1-Q))**2
 
+higgs = (SIGMA - d) * (1 + pi*alpha/RHO)  # m_H/m_p: breathing mode with VP/radial correction
+m_p_GeV = mpf('0.938272088')
+higgs_GeV = higgs * m_p_GeV
+
 print(f"alpha^-1  = {alpha_inv}")   # 137.035999177  (CODATA 2022: 137.035999177(21))
 print(f"m_p/m_e   = {mass}")        # 1836.152673485 (CODATA 2022: 1836.152673426(32))
 print(f"m_mu/m_e  = {muon}")        # 206.7682824754 (CODATA 2022: 206.7682827(46))
 print(f"m_tau/m_e = {tau_mass}")    # 3477.4799      (CODATA 2022: 3477.48(57))
+print(f"m_H/m_p   = {higgs}")       # 133.339        (ATLAS: 133.34(12))
+print(f"m_H (GeV) = {higgs_GeV}")   # 125.108 GeV    (ATLAS: 125.11 +/- 0.11)

@@ -3,12 +3,13 @@
 BSM Core Module — Generator functions and constants
 All BSM calculations centralized here
 
-Updated: February 2026 (Session XII — Closed-Form Koide)
+Updated: February 2026 (Session XIII — Higgs Mass Prediction)
   - Switched from numpy to mpmath for arbitrary-precision arithmetic
   - α equation extended to four loops (c₄ = (2ρ/(2n+1))·π³)
   - Muon formula extended to O(α³) with proton-parallel vertex
   - Tau prediction via dressed Koide with closed-form quadratic solution
-  - All results benchmarked against CODATA 2022
+  - Higgs mass ratio m_H/m_p = (σ-d)(1 + πα/ρ) predicts 125.108 GeV
+  - All results benchmarked against CODATA 2022 / LHC Run 2
 """
 
 from mpmath import mp, mpf, pi, sqrt
@@ -181,6 +182,37 @@ def compute_tau_ratio(n, d=3):
 
     return x**2
 
+def compute_higgs_ratio(n, d=3):
+    """
+    Compute Higgs-proton mass ratio m_H/m_p.
+
+    m_H/m_p = (σ - d)(1 + πα/ρ)
+
+    Tree level: σ - d = 133 (scalar pairwise modes minus Goldstone bosons)
+      σ = n(2n+1) = 136 pairwise scalar couplings at each lattice site
+      d = 3 Goldstone modes eaten by W±, Z (one per broken translational generator)
+
+    Radiative correction: πα/ρ (vacuum polarization per radial mode)
+      πα  — one-loop vacuum polarization (universal BSM VP factor)
+      1/ρ — inverse radial shell count; breathing mode is outermost radial oscillation
+
+    Physical interpretation: The Higgs is the collective breathing mode
+    (uniform oscillation of lattice spacing) of the 133 surviving scalar
+    channels after Goldstone subtraction.
+    """
+    s = sigma(n)
+    r = rho(n)
+    alpha = compute_alpha(n)
+    d = mpf(d)
+
+    tree = s - d
+    correction = pi * alpha / r
+
+    return tree * (1 + correction)
+
+# Proton mass in GeV (CODATA 2022) for absolute Higgs mass
+M_PROTON_GEV = mpf('0.938272088')
+
 # =============================================================================
 # CONSTANTS AT n = 8
 # =============================================================================
@@ -202,13 +234,19 @@ MASS_RATIO_BSM = compute_mass_ratio(N)
 MUON_RATIO_BSM = compute_muon_ratio(N)
 KOIDE_Q_BSM = compute_koide_Q(N)
 TAU_RATIO_BSM = compute_tau_ratio(N)
+HIGGS_RATIO_BSM = compute_higgs_ratio(N)
+HIGGS_GEV_BSM = HIGGS_RATIO_BSM * M_PROTON_GEV
 
-# Measured values (CODATA 2022)
+# Measured values (CODATA 2022 / LHC Run 2)
 ALPHA_INV_MEASURED = mpf('137.035999177')
 MASS_RATIO_MEASURED = mpf('1836.152673426')
 MUON_RATIO_MEASURED = mpf('206.7682827')
 TAU_RATIO_MEASURED = mpf('3477.48')
 TAU_RATIO_UNCERTAINTY = mpf('0.57')
+HIGGS_ATLAS_GEV = mpf('125.11')
+HIGGS_ATLAS_UNC = mpf('0.11')
+HIGGS_CMS_GEV = mpf('125.35')
+HIGGS_CMS_UNC = mpf('0.15')
 
 # =============================================================================
 # VERIFICATION
@@ -271,10 +309,25 @@ if __name__ == '__main__':
     err_tau = abs(TAU_RATIO_BSM - TAU_RATIO_MEASURED)
     print(f"  Error = {float(err_tau):.4f} ({float(err_tau/TAU_RATIO_MEASURED*1e6):.3f} ppm, {float(err_tau/TAU_RATIO_UNCERTAINTY):.4f}σ)")
 
+    print(f"\n{'─'*72}")
+    print(f"Higgs Boson Mass (breathing mode):")
+    print(f"  m_H/m_p = (σ - d)(1 + πα/ρ)")
+    print(f"  Tree level: σ - d = {int(SIGMA_8)} - {d} = {int(SIGMA_8 - d)}")
+    print(f"  Correction: πα/ρ = π × {float(alpha):.10f} / {int(RHO_8)} = {float(pi*alpha/RHO_8):.6f}")
+    print(f"  m_H/m_p = {float(HIGGS_RATIO_BSM):.6f}")
+    print(f"  m_H     = {float(HIGGS_GEV_BSM):.6f} GeV")
+    print(f"  ATLAS   = {HIGGS_ATLAS_GEV} ± {HIGGS_ATLAS_UNC} GeV")
+    print(f"  CMS     = {HIGGS_CMS_GEV} ± {HIGGS_CMS_UNC} GeV")
+    err_atlas = abs(HIGGS_GEV_BSM - HIGGS_ATLAS_GEV)
+    err_cms = abs(HIGGS_GEV_BSM - HIGGS_CMS_GEV)
+    print(f"  Deviation (ATLAS) = {float(err_atlas):.3f} GeV ({float(err_atlas/HIGGS_ATLAS_UNC):.2f}σ)")
+    print(f"  Deviation (CMS)   = {float(err_cms):.3f} GeV ({float(err_cms/HIGGS_CMS_UNC):.1f}σ)")
+
     print(f"\n{'='*72}")
-    print(f"SCORECARD: Four constants, two inputs (n=8, d=3, π), zero free parameters")
+    print(f"SCORECARD: Five constants, two inputs (n=8, d=3, π), zero free parameters")
     print(f"  α⁻¹    → {float(err_a/ALPHA_INV_MEASURED*1e9):.4f} ppb")
     print(f"  m_p/m_e → {float(err_m/MASS_RATIO_MEASURED*1e9):.2f} ppb")
     print(f"  m_μ/m_e → {float(err_mu/MUON_RATIO_MEASURED*1e9):.1f} ppb")
     print(f"  m_τ/m_e → {float(err_tau/TAU_RATIO_MEASURED*1e6):.3f} ppm  ({float(err_tau/TAU_RATIO_UNCERTAINTY):.4f}σ)")
+    print(f"  m_H/m_p → {float(err_atlas):.3f} GeV from ATLAS ({float(err_atlas/HIGGS_ATLAS_UNC):.2f}σ)")
     print(f"{'='*72}")
