@@ -9,21 +9,24 @@ authors:
     affiliation: Independent Researcher
 abstract: >-
   A lattice field theory framework in which the fine structure constant,
-  the proton-electron mass ratio, the muon-electron mass ratio, and the
-  tau-electron mass ratio emerge from the spectral geometry of the BCC
-  lattice Dirac operator. The framework takes two inputs — the BCC
-  coordination number n = 8 and the transcendental π — with d = 3
-  (spatial dimensions) entering the muon and tau formulas, and produces
-  values for all four constants with zero free parameters. The tau mass
-  is predicted via a dressed Koide relation with Q = (d-1)/d +
-  (d-1)π²α²/((n-1)σ), solved in closed form. Current accuracy against
-  CODATA 2022: α⁻¹ < 0.001 ppb, m_p/m_e 0.03 ppb, m_μ/m_e 1.1 ppb
-  (0.05σ), m_τ/m_e 0.027 ppm (0.0002σ).
+  the proton-electron mass ratio, the muon-electron mass ratio, the
+  tau-electron mass ratio, and the Higgs boson mass emerge from the
+  spectral geometry of the BCC lattice Dirac operator. The framework
+  takes two inputs — the BCC coordination number n = 8 and the
+  transcendental π — with d = 3 (spatial dimensions) entering the muon,
+  tau, and Higgs formulas, and produces values for all five constants
+  with zero free parameters. The Higgs mass is predicted via
+  m_H/m_p = (σ-d)(1 + πα/ρ) = 133.339, giving 125.108 GeV — matching
+  ATLAS (125.11 ± 0.11 GeV) to 0.02σ. The prediction is falsifiable at
+  the HL-LHC. Current accuracy: α⁻¹ < 0.001 ppb, m_p/m_e 0.03 ppb,
+  m_μ/m_e 1.1 ppb (0.05σ), m_τ/m_e 0.027 ppm (0.0002σ),
+  m_H 0.02σ (ATLAS).
 keywords:
   - fine structure constant
   - proton-electron mass ratio
   - muon-electron mass ratio
   - tau-electron mass ratio
+  - Higgs boson mass
   - Koide formula
   - BCC lattice
   - lattice field theory
@@ -31,8 +34,8 @@ keywords:
   - Dyson equation
   - spectral geometry
 license: CC-BY-4.0
-version: "3.0"
-date-released: "2026-02-04"
+version: "4.0"
+date-released: "2026-02-06"
 doi: 10.5281/zenodo.18478082
 url: "https://doi.org/10.5281/zenodo.18478082"
 repository-code: "https://github.com/garciaalan186/bcc_lattice"

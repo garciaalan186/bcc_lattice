@@ -46,14 +46,16 @@
 
 I am an independent researcher exploring a lattice field theory framework
 in which the fine structure constant, the proton-electron mass ratio, the
-muon-electron mass ratio, and the tau-electron mass ratio emerge from the
-spectral geometry of the BCC lattice Dirac operator. The framework takes
-two inputs---the BCC coordination number $n = 8$ and the transcendental
-$\pi$---with $d = 3$ (spatial dimensions) entering the muon and tau
-formulas, and produces values for all four constants with zero free
-parameters. I am writing to ask whether you can see a trivial explanation
-for the coincidences below, or whether the lattice selection mechanism has
-structural content.
+muon-electron mass ratio, the tau-electron mass ratio, and the Higgs boson
+mass emerge from the spectral geometry of the BCC lattice Dirac operator.
+The framework takes two inputs---the BCC coordination number $n = 8$ and the
+transcendental $\pi$---with $d = 3$ (spatial dimensions) entering the muon,
+tau, and Higgs formulas, and produces values for all five constants with zero
+free parameters. The Higgs prediction (125.108~GeV) is genuinely
+predictive---it selects the ATLAS value over CMS and is falsifiable at the
+HL-LHC. I am writing to ask whether you can see a trivial explanation for the
+coincidences below, or whether the lattice selection mechanism has structural
+content.
 
 % -- 2 --
 \subsection*{2.\ Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
@@ -236,7 +238,52 @@ transverse Laplacian on the binary defect; a first-principles derivation from
 the lattice Lagrangian remains an open problem.
 
 % -- 7 --
-\subsection*{7.\ Lattice Selection: Why BCC?}
+\subsection*{7.\ Result 5: The Higgs Boson Mass}
+
+The Higgs boson is modeled as the \emph{breathing mode} of the lattice---the
+uniform oscillation of lattice spacing about equilibrium. Each site has
+$\sigma = n(2n{+}1) = 136$ pairwise scalar modes; $d = 3$ become Goldstone
+bosons (eaten by $W^\pm$, $Z$), leaving $\sigma - d = 133$ physical scalar
+channels. The Higgs mass counts these surviving channels in proton-mass
+units, with a universal vacuum polarization correction:
+
+\begin{equation*}
+  \boxed{\frac{m_H}{m_p}
+    = (\sigma - d)\!\left(1 + \frac{\pi\alpha}{\rho}\right)}
+\end{equation*}
+
+where $\pi\alpha$ is the one-loop VP factor and $\rho = n{+}1 = 9$ counts
+the radial shells in the spin-$n$ representation. The tree level gives
+$133 \times 0.9383 = 124.79$~GeV (0.26\% low); the correction raises this
+to:
+
+\begin{equation*}
+  m_H^{\mathrm{BSM}} = 133.339 \times 0.938272\,\mathrm{GeV}
+    = 125.108\,\mathrm{GeV}
+\end{equation*}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Experiment} & \textbf{Measured (GeV)} & \textbf{BSM (GeV)} & \textbf{Deviation} \\
+\midrule
+ATLAS (combined) & $125.11 \pm 0.11$ & $125.108$ & $0.02\sigma$ \\
+CMS (combined) & $125.35 \pm 0.15$ & $125.108$ & $1.6\sigma$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The BSM prediction matches ATLAS to $0.02\sigma$ but is $1.6\sigma$
+from CMS---the framework \emph{picks a side} in the ATLAS/CMS tension
+($1.3\sigma$). The HL-LHC, projecting 21~MeV precision by 2041, will
+confirm or rule out this prediction: convergence toward 125.11~GeV confirms
+it ($0.1\sigma$); convergence toward 125.35~GeV rules it out ($11.5\sigma$).
+This is the first BSM result that is more precise than experiment and
+genuinely predictive rather than postdictive.
+
+% -- 8 --
+\subsection*{8.\ Lattice Selection: Why BCC?}
 
 Tested against SC ($n = 6$) and FCC ($n = 12$). The tree-level mass
 generator $\mu(n)$ is the discriminator:
@@ -263,8 +310,8 @@ for cubic lattices (first two loop corrections identical). Discrimination enters
 at three loops via spectral variance and, decisively, through $\mu(n)$: no
 perturbative correction bridges SC's 55\% mass deficit.
 
-% -- 8 --
-\subsection*{8.\ Questions for the Reader}
+% -- 9 --
+\subsection*{9.\ Questions for the Reader}
 
 \begin{enumerate}[label=(\alph*),nosep,leftmargin=1.5em]
   \item Is there a trivial or known reason why polynomials of 8 produce
@@ -320,10 +367,12 @@ Q = mpf(d-1)/d + mpf(d-1)*pi**2*alpha**2/((N-1)*SIGMA)
 b = sqrt(muon)
 D = (1 + muon)*(2*Q - 1) + 2*Q*b
 tau_mass = ((Q*(1+b) + sqrt(D)) / (1-Q))**2
+higgs = (SIGMA - d) * (1 + pi*alpha/RHO)
 print(f"alpha^-1  = {alpha_inv}")   # 137.035999177...
 print(f"m_p/m_e   = {mass}")        # 1836.15267348...
 print(f"m_mu/m_e  = {muon}")        # 206.768282475...
 print(f"m_tau/m_e = {tau_mass}")    # 3477.47990762...
+print(f"m_H/m_p   = {higgs}")       # 133.339 (125.108 GeV)
 \end{Verbatim}
 
 \vspace{4pt}
