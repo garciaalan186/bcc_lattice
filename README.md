@@ -28,10 +28,14 @@ The physical picture underlying the lattice structure is still not clear, but th
 
 | File | Description |
 |------|-------------|
-| `bsm_inquiry.tex` | The paper (LaTeX source) |
+| `bsm_inquiry.tex` | The paper (LaTeX source) — mathematical framework and results |
 | `bsm_inquiry.pdf` | Compiled PDF |
+| `bsm_physical_hypothesis_v2.tex` | Physical hypothesis companion document (LaTeX source) |
+| `bsm_physical_hypothesis_v2.pdf` | Compiled PDF — illustrated guide to the physical picture |
 | `bsm_streamlined.py` | Minimal verification script (all six constants) |
 | `bsm_core.py` | Full computation module with documentation |
+
+The **physical hypothesis document** accompanies the main paper. Where `bsm_inquiry` presents the mathematical framework and numerical results, `bsm_physical_hypothesis_v2` provides a visual, narrative account of the physical implications: the binary singularity origin, BCC lattice and defect classification, the photon's identity and dispersion relation, the four-channel correction taxonomy, and observational constraints — rendered with TikZ diagrams throughout.
 
 ## Quick Verification
 
@@ -93,3 +97,9 @@ This is an independent investigation, not a claim of proof. I am actively seekin
 ## License
 
 This work is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+
+
+
+
+
