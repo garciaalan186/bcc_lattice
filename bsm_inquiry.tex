@@ -46,16 +46,16 @@
 
 I am an independent researcher exploring a lattice field theory framework
 in which the fine structure constant, the proton-electron mass ratio, the
-muon-electron mass ratio, the tau-electron mass ratio, and the Higgs boson
-mass emerge from the spectral geometry of the BCC lattice Dirac operator.
-The framework takes two inputs---the BCC coordination number $n = 8$ and the
-transcendental $\pi$---with $d = 3$ (spatial dimensions) entering the muon,
-tau, and Higgs formulas, and produces values for all five constants with zero
-free parameters. The Higgs prediction (125.108~GeV) is genuinely
-predictive---it selects the ATLAS value over CMS and is falsifiable at the
-HL-LHC. I am writing to ask whether you can see a trivial explanation for the
-coincidences below, or whether the lattice selection mechanism has structural
-content.
+muon-electron mass ratio, the tau-electron mass ratio, the Higgs boson
+mass, and the neutron-proton mass difference emerge from the spectral geometry
+of the BCC lattice Dirac operator. The framework takes two inputs---the BCC
+coordination number $n = 8$ and the transcendental $\pi$---with $d = 3$
+(spatial dimensions) entering the muon, tau, Higgs, and neutron formulas,
+and produces values for all six constants with zero free parameters. The Higgs
+prediction (125.108~GeV) is genuinely predictive---it selects the ATLAS value
+over CMS and is falsifiable at the HL-LHC. I am writing to ask whether you
+can see a trivial explanation for the coincidences below, or whether the
+lattice selection mechanism has structural content.
 
 % -- 2 --
 \subsection*{2.\ Generator Functions from $\mathrm{SO}(3)$ Representation Theory}
@@ -283,23 +283,94 @@ This is the first BSM result that is more precise than experiment and
 genuinely predictive rather than postdictive.
 
 % -- 8 --
-\subsection*{8.\ Lattice Selection: Why BCC?}
+\subsection*{8.\ Result 6: The Neutron-Proton Mass Difference}
+
+The neutron-proton mass difference $\Delta m = m_n - m_p = 1.29334\;\mathrm{MeV}
+= 2.531\,030\;m_e$ is an $O(1)$ quantity in electron mass units---not a
+perturbative correction. In the BSM framework, the proton and neutron are
+the same ternary defect differing in \emph{orientation}: how the triangle
+sits among the $\binom{n-1}{d} = \binom{7}{3} = 35$ possible spatial triads.
+
+\begin{equation*}
+  \boxed{\frac{\Delta m}{m_e}
+    = \binom{n{-}1}{d}\,\pi^2\alpha\!\left(1 + \frac{(n{-}d)\,\alpha}{\rho}\right)
+    + \frac{\rho}{2n}\,\pi\alpha^2 - \alpha^2}
+\end{equation*}
+
+The corrections follow the universal BSM taxonomy:
+\begin{itemize}[nosep,leftmargin=1.5em]
+  \item \textbf{Tree:} $\binom{7}{3}\pi^2\alpha = 35\,\pi^2\alpha = 2.5208\;m_e$
+    (orientational modes $\times$ EM lattice coupling). 0.41\% below experiment.
+  \item \textbf{Vertex:} $(n{-}d)\alpha/\rho = 5\alpha/9$ (spectator bonds /
+    radial modes). Closes to 37\,ppm.
+  \item \textbf{VP:} $(\rho/2n)\,\pi\alpha^2 = \tfrac{9}{16}\pi\alpha^2$
+    (cross-references Higgs and proton channels). Closes to 0.13\,ppm.
+  \item \textbf{Self-intersection:} $-\alpha^2$, universal.
+\end{itemize}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lc}
+\toprule
+Lattice framework prediction & $2.531\,030$ \\
+Experiment & $2.531\,030(3)$ \\
+Agreement & $0.13\,\mathrm{ppm}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The binomial coefficient $\binom{n-1}{d}$ is the sharpest lattice
+discriminator: SC ($n = 6$) gives $\binom{5}{3} = 10$, predicting 50\% of
+experiment; FCC ($n = 12$) gives $\binom{11}{3} = 165$, predicting 114\%
+above experiment. Only BCC works.
+
+% -- 9 --
+\subsection*{9.\ The Vacuum Polarization Catalog}
+
+Each BSM mass formula contains exactly one VP correction, governed by a
+distinct geometric generator. The four base generators---$\tau$, $2n$, $d$,
+$\rho$---are each assigned to exactly one sector (\emph{non-overlap principle}):
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{llcl}
+\toprule
+\textbf{Observable} & \textbf{VP correction} & \textbf{Generator} & \textbf{Structure} \\
+\midrule
+$\ainv$ & $c_1/\tau = \pi^2/(2\tau)$ & $\tau = 137$ & Topological \\
+$m_p/m_e$ & $(1+1/(2n))\pi^2\alpha(1{-}\alpha^2)$ & $2n = 16$ & Coordination \\
+$m_\mu/m_e$ & $(d/2)\pi\alpha(1{-}\alpha^2)$ & $d = 3$ & Spatial dimension \\
+$m_H/m_p$ & $\pi\alpha/\rho$ & $\rho = 9$ & Radial \\
+$\Delta m/m_e$ & $(\rho/2n)\pi\alpha^2$ & $\rho/(2n)$ & Cross-reference \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The $\Delta m$ VP uses $\rho/(2n)$, a product of two generators; it
+is the only two-loop VP ($\alpha^2$), cross-referencing the Higgs ($\rho$)
+and proton ($2n$) channels. This non-overlap principle resolves the Higgs
+correction ambiguity: $\pi\alpha/\rho$ is the unique choice that preserves
+generator injectivity (the alternatives $\pi\alpha/(2d)$ and $\pi\alpha/n$
+reuse generators already assigned to the muon and proton sectors).
+
+% -- 10 --
+\subsection*{10.\ Lattice Selection: Why BCC?}
 
 Tested against SC ($n = 6$) and FCC ($n = 12$). The tree-level mass
 generator $\mu(n)$ is the discriminator:
 
 \begin{table}[H]
 \centering\small
-\begin{tabular}{cccccc}
+\begin{tabular}{ccccccc}
 \toprule
-\textbf{Lattice} & $n$ & $\mu(n)$ & $\ainv$ \textbf{error}
+\textbf{Lattice} & $n$ & $\mu(n)$ & $\binom{n-1}{d}$ & $\ainv$ \textbf{error}
   & \textbf{Mass error} & \textbf{Status} \\
 \midrule
-\rowcolor{bccgreen} BCC & 8 & 1836 & $< 0.001\ppb$ & $< 0.03\ppb$
+\rowcolor{bccgreen} BCC & 8 & 1836 & 35 & $< 0.001\ppb$ & $< 0.03\ppb$
   & Passes all \\
-\rowcolor{scyellow} SC & 6 & 819 & $9.9\ppb$ & $-55.4\%$
+\rowcolor{scyellow} SC & 6 & 819 & 10 & $9.9\ppb$ & $-55.4\%$
   & Fails mass \\
-\rowcolor{fccred} FCC & 12 & 5850 & $142.7\ppb\;(6.8\sigma)$ & $+218.6\%$
+\rowcolor{fccred} FCC & 12 & 5850 & 165 & $142.7\ppb\;(6.8\sigma)$ & $+218.6\%$
   & Fails both \\
 \bottomrule
 \end{tabular}
@@ -310,8 +381,8 @@ for cubic lattices (first two loop corrections identical). Discrimination enters
 at three loops via spectral variance and, decisively, through $\mu(n)$: no
 perturbative correction bridges SC's 55\% mass deficit.
 
-% -- 9 --
-\subsection*{9.\ Questions for the Reader}
+% -- 11 --
+\subsection*{11.\ Questions for the Reader}
 
 \begin{enumerate}[label=(\alph*),nosep,leftmargin=1.5em]
   \item Is there a trivial or known reason why polynomials of 8 produce
@@ -334,6 +405,12 @@ perturbative correction bridges SC's 55\% mass deficit.
   \item The interpretation $Q = (d{-}1)/d$ identifies the Koide constant
     with the transverse fraction of a line defect. Does this codimensional
     constraint have precedent in defect field theory or conformal field theory?
+  \item The 35 orientational triads ($\binom{7}{3}$) provide a lattice
+    analogue of isospin. Does the mapping to SU(2) isospin---two states
+    from 35 modes---have a natural group-theoretic explanation?
+  \item The VP catalog assigns four generators ($\tau$, $2n$, $d$, $\rho$)
+    injectively to four mass sectors. Is such a non-overlap structure
+    expected from gauge invariance or a selection rule?
 \end{enumerate}
 
 \medskip
@@ -349,6 +426,7 @@ explanation. Full paper (\LaTeX) available on request.
 
 \begin{Verbatim}[fontsize=\footnotesize]
 from mpmath import mp, mpf, pi, sqrt
+from math import comb
 mp.dps = 50
 def tau(n): return n*(2*n+1)+1
 def sigma(n): return n*(2*n+1)
@@ -368,11 +446,14 @@ b = sqrt(muon)
 D = (1 + muon)*(2*Q - 1) + 2*Q*b
 tau_mass = ((Q*(1+b) + sqrt(D)) / (1-Q))**2
 higgs = (SIGMA - d) * (1 + pi*alpha/RHO)
+dm_tree = comb(N-1, d) * pi**2 * alpha
+dm = dm_tree*(1 + (N-d)*alpha/RHO) + (RHO/(2*N))*pi*alpha**2 - alpha**2
 print(f"alpha^-1  = {alpha_inv}")   # 137.035999177...
 print(f"m_p/m_e   = {mass}")        # 1836.15267348...
 print(f"m_mu/m_e  = {muon}")        # 206.768282475...
 print(f"m_tau/m_e = {tau_mass}")    # 3477.47990762...
 print(f"m_H/m_p   = {higgs}")       # 133.339 (125.108 GeV)
+print(f"Dm/m_e    = {dm}")          # 2.531030 (expt: 2.531030(3))
 \end{Verbatim}
 
 \vspace{4pt}

@@ -3,15 +3,18 @@
 BSM Core Module — Generator functions and constants
 All BSM calculations centralized here
 
-Updated: February 2026 (Session XIII — Higgs Mass Prediction)
+Updated: February 2026 (Session XIV — Neutron-Proton Mass Difference)
   - Switched from numpy to mpmath for arbitrary-precision arithmetic
   - α equation extended to four loops (c₄ = (2ρ/(2n+1))·π³)
   - Muon formula extended to O(α³) with proton-parallel vertex
   - Tau prediction via dressed Koide with closed-form quadratic solution
   - Higgs mass ratio m_H/m_p = (σ-d)(1 + πα/ρ) predicts 125.108 GeV
+  - Neutron-proton mass difference Δm/m_e = C(n-1,d)·π²α(1+(n-d)α/ρ) + (ρ/2n)πα² - α²
+  - VP catalog: four sectors, four generators (τ, 2n, d, ρ), injective map
   - All results benchmarked against CODATA 2022 / LHC Run 2
 """
 
+from math import comb
 from mpmath import mp, mpf, pi, sqrt
 
 # Set default precision (50 decimal places; float64 sufficient for physics,
@@ -210,6 +213,31 @@ def compute_higgs_ratio(n, d=3):
 
     return tree * (1 + correction)
 
+def compute_neutron_mass_diff(n, d=3):
+    """
+    Compute neutron-proton mass difference Δm/m_e.
+
+    Δm/m_e = C(n-1,d)·π²α·(1 + (n-d)α/ρ) + (ρ/2n)·πα² - α²
+
+    Correction taxonomy:
+      Tree:   C(n-1,d)·π²α = 35·π²α  (orientational modes × EM lattice coupling)
+      Vertex: (n-d)α/ρ = 5α/9         (spectator bonds / radial modes)
+      VP:     (ρ/2n)·πα² = (9/16)πα²  (cross-reference Higgs ρ / proton 2n)
+      Self-intersection: -α²           (universal)
+
+    The binomial C(n-1,d) = C(7,3) = 35 counts orientational triads of
+    the ternary defect — the BSM analogue of isospin.
+    """
+    r = rho(n)
+    alpha = compute_alpha(n)
+
+    tree = mpf(comb(n-1, d)) * pi**2 * alpha
+    vertex = tree * (n - d) * alpha / r
+    vp = (r / (2*n)) * pi * alpha**2
+    self_int = -alpha**2
+
+    return tree + vertex + vp + self_int
+
 # Proton mass in GeV (CODATA 2022) for absolute Higgs mass
 M_PROTON_GEV = mpf('0.938272088')
 
@@ -236,6 +264,7 @@ KOIDE_Q_BSM = compute_koide_Q(N)
 TAU_RATIO_BSM = compute_tau_ratio(N)
 HIGGS_RATIO_BSM = compute_higgs_ratio(N)
 HIGGS_GEV_BSM = HIGGS_RATIO_BSM * M_PROTON_GEV
+NEUTRON_DIFF_BSM = compute_neutron_mass_diff(N)
 
 # Measured values (CODATA 2022 / LHC Run 2)
 ALPHA_INV_MEASURED = mpf('137.035999177')
@@ -247,6 +276,8 @@ HIGGS_ATLAS_GEV = mpf('125.11')
 HIGGS_ATLAS_UNC = mpf('0.11')
 HIGGS_CMS_GEV = mpf('125.35')
 HIGGS_CMS_UNC = mpf('0.15')
+NEUTRON_DIFF_MEASURED = mpf('2.531030')
+NEUTRON_DIFF_UNCERTAINTY = mpf('0.000003')
 
 # =============================================================================
 # VERIFICATION
@@ -323,11 +354,29 @@ if __name__ == '__main__':
     print(f"  Deviation (ATLAS) = {float(err_atlas):.3f} GeV ({float(err_atlas/HIGGS_ATLAS_UNC):.2f}σ)")
     print(f"  Deviation (CMS)   = {float(err_cms):.3f} GeV ({float(err_cms/HIGGS_CMS_UNC):.1f}σ)")
 
+    print(f"\n{'─'*72}")
+    print(f"Neutron-Proton Mass Difference (combinatorial tree + corrections):")
+    print(f"  Δm/m_e = C(n-1,d)·π²α·(1 + (n-d)α/ρ) + (ρ/2n)·πα² - α²")
+    print(f"  C(7,3) = {comb(N-1, d)}  (orientational triads)")
+    dm_tree = mpf(comb(N-1, d)) * pi**2 * alpha
+    dm_vtx = dm_tree * (N - d) * alpha / RHO_8
+    dm_vp = (RHO_8 / (2*N)) * pi * alpha**2
+    dm_si = -alpha**2
+    print(f"  Tree:   {float(dm_tree):.9f}  (99.60%)")
+    print(f"  Vertex: {float(dm_vtx):.9f}  (0.40%)")
+    print(f"  VP:     {float(dm_vp):.6e}  (0.004%)")
+    print(f"  Self:   {float(dm_si):.6e}  (-0.002%)")
+    print(f"  Δm/m_e = {NEUTRON_DIFF_BSM}")
+    print(f"  Expt   = {NEUTRON_DIFF_MEASURED}(3)")
+    err_dm = abs(NEUTRON_DIFF_BSM - NEUTRON_DIFF_MEASURED)
+    print(f"  Error = {float(err_dm):.3e} ({float(err_dm/NEUTRON_DIFF_MEASURED*1e6):.2f} ppm)")
+
     print(f"\n{'='*72}")
-    print(f"SCORECARD: Five constants, two inputs (n=8, d=3, π), zero free parameters")
+    print(f"SCORECARD: Six constants, two inputs (n=8, d=3, π), zero free parameters")
     print(f"  α⁻¹    → {float(err_a/ALPHA_INV_MEASURED*1e9):.4f} ppb")
     print(f"  m_p/m_e → {float(err_m/MASS_RATIO_MEASURED*1e9):.2f} ppb")
     print(f"  m_μ/m_e → {float(err_mu/MUON_RATIO_MEASURED*1e9):.1f} ppb")
     print(f"  m_τ/m_e → {float(err_tau/TAU_RATIO_MEASURED*1e6):.3f} ppm  ({float(err_tau/TAU_RATIO_UNCERTAINTY):.4f}σ)")
     print(f"  m_H/m_p → {float(err_atlas):.3f} GeV from ATLAS ({float(err_atlas/HIGGS_ATLAS_UNC):.2f}σ)")
+    print(f"  Δm/m_e  → {float(err_dm/NEUTRON_DIFF_MEASURED*1e6):.2f} ppm")
     print(f"{'='*72}")

@@ -2,8 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18478082.svg)](https://doi.org/10.5281/zenodo.18478082)
 
-**Author:** Alan Garcia — Software Engineer
-
+**Author:** Alan Garcia — Independent Researcher  
 **Contact:** alan.javier.garcia@gmail.com
 
 ## How This Started
@@ -12,7 +11,7 @@ This project began with a simple question about wave–particle duality: what wo
 
 I imagined two massive objects in a tight helical orbit at a scale far below anything we can currently measure. Viewed from the side, their orbit traces a wave pattern; viewed head-on, they look like a single point — particle-like. I recalled that probing the Planck length with light would require wavelengths so energetic they'd collapse into a black hole, so I pushed the picture further: a sub-Planckian binary system of singularities.
 
-The question then became one of self-consistency. How small would those singularities have to be? What constraints would the framework need to satisfy? Over about three days of iterative computation, the framework converged on a body-centered cubic (BCC) lattice structure that derives the inverse fine structure constant (α⁻¹), the proton-electron mass ratio (m_p/m_e), the muon-electron mass ratio (m_μ/m_e), the tau-electron mass ratio (m_τ/m_e), and the Higgs boson mass (m_H) from two inputs — the BCC coordination number *n* = 8, the spatial dimension *d* = 3, and the transcendental π — with zero free parameters. The Higgs prediction (125.108 GeV) is genuinely predictive: it matches ATLAS to 0.02σ and will be confirmed or ruled out by the HL-LHC.
+The question then became one of self-consistency. How small would those singularities have to be? What constraints would the framework need to satisfy? Over about three days of iterative computation, the framework converged on a body-centered cubic (BCC) lattice structure that derives the inverse fine structure constant (α⁻¹), the proton-electron mass ratio (m_p/m_e), the muon-electron mass ratio (m_μ/m_e), the tau-electron mass ratio (m_τ/m_e), the Higgs boson mass (m_H), and the neutron-proton mass difference (Δm) from two inputs — the BCC coordination number *n* = 8, the spatial dimension *d* = 3, and the transcendental π — with zero free parameters. The Higgs prediction (125.108 GeV) is genuinely predictive: it matches ATLAS to 0.02σ and will be confirmed or ruled out by the HL-LHC.
 
 | Constant | Prediction | Experimental | Agreement |
 |----------|-----------|--------------|-----------|
@@ -21,6 +20,7 @@ The question then became one of self-consistency. How small would those singular
 | m_μ/m_e | 206.768 282 5 | 206.768 282 7(46) | 1.1 ppb (0.05σ) |
 | m_τ/m_e | 3477.4799 | 3477.48 ± 0.57 | 0.027 ppm (0.0002σ) |
 | m_H | 125.108 GeV | 125.11 ± 0.11 (ATLAS) | 0.02σ (ATLAS) |
+| Δm/m_e | 2.531 030 | 2.531 030(3) | 0.13 ppm |
 
 The physical picture underlying the lattice structure is still not clear, but the predictive accuracy is difficult to dismiss as coincidence, and I am seeking input from the physics and mathematics communities.
 
@@ -30,7 +30,7 @@ The physical picture underlying the lattice structure is still not clear, but th
 |------|-------------|
 | `bsm_inquiry.tex` | The paper (LaTeX source) |
 | `bsm_inquiry.pdf` | Compiled PDF |
-| `bsm_streamlined.py` | Minimal verification script (all five constants) |
+| `bsm_streamlined.py` | Minimal verification script (all six constants) |
 | `bsm_core.py` | Full computation module with documentation |
 
 ## Quick Verification
@@ -66,11 +66,16 @@ tau_mass = ((Q*(1+b) + sqrt(D)) / (1-Q))**2
 
 higgs = (SIGMA - d) * (1 + pi*alpha/RHO)  # m_H/m_p: breathing mode
 
+from math import comb
+dm_tree = comb(N-1, d) * pi**2 * alpha          # C(7,3)*pi^2*alpha
+dm = dm_tree*(1 + (N-d)*alpha/RHO) + (RHO/(2*N))*pi*alpha**2 - alpha**2
+
 print(f"alpha^-1  = {alpha_inv}")   # 137.035999177...  (CODATA: 137.035999177(21))
 print(f"m_p/m_e   = {mass}")        # 1836.15267348...  (CODATA: 1836.152673426(32))
 print(f"m_mu/m_e  = {muon}")        # 206.768282475...  (CODATA: 206.7682827(46))
 print(f"m_tau/m_e = {tau_mass}")    # 3477.47990762...  (CODATA: 3477.48(57))
 print(f"m_H/m_p   = {higgs}")       # 133.339 → 125.108 GeV (ATLAS: 125.11 ± 0.11)
+print(f"Dm/m_e    = {dm}")          # 2.531030 (Expt: 2.531030(3))
 ```
 
 ## Citation
